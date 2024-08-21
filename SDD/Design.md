@@ -2,13 +2,13 @@
 
 > ### Programming task
 >
-> This assessment task combines designing and developing a program to meet the problem specification, and then using the internal commentary > of your program, and an additional question, to meet Outcome 1 and 2.
+> This assessment task combines designing and developing a program to meet the problem specification, and then using the internal commentary of your program, and an additional question, to meet Outcome 1 and 2.
 >
-> To pass this assessment, you will have to complete all the steps, show your assessor your working program, and hand in all the hard copy > evidence of the work you have completed.
+> To pass this assessment, you will have to complete all the steps, show your assessor your working program, and hand in all the hard copy evidence of the work you have completed.
 >
 > You can document your achievement in the programming tasks checklist.
 >
-> Evidence of sufficient programming tasks should be appropriately labelled with your name, date(s) of completion, and your assessor’s > comments (if any). Evidence may be kept in electronic or hard copy form.
+> Evidence of sufficient programming tasks should be appropriately labelled with your name, date(s) of completion, and your assessor’s comments (if any). Evidence may be kept in electronic or hard copy form.
 >
 > Evidence for the successful completion of these Outcomes may be drawn from more than one programming task.
 >
@@ -33,11 +33,11 @@ Take coursework mark from input
 Validate coursework mark is an integer
 Validate coursework mark is between 0 and 60
 
-Take prelim mark from input
-Validate prelim mark is an integer
-Validate prelim mark is between 0 and 90
+Take exam mark from input
+Validate exam mark is an integer
+Validate exam mark is between 0 and 90
 
-Add coursework and prelim marks together, giving total mark
+Add coursework and exam marks together, giving total mark
 Divide total mark by 1.5, giving float percentage
 Convert float percentage to integer, giving percentage
 
