@@ -26,14 +26,12 @@
 
 ## Step 1
 
-Grade calculation function
+Grade calculation function (takes coursework mark, exam mark)
 
 ```
-Take coursework mark from input
 Validate coursework mark is an integer
 Validate coursework mark is between 0 and 60
 
-Take exam mark from input
 Validate exam mark is an integer
 Validate exam mark is between 0 and 90
 
@@ -67,10 +65,17 @@ Student class
 
 ```
 Name (string)
-Grade (string)
+Coursework mark (integer)
+Exam mark (integer)
+
+Total mark:
+	Add coursework and exam marks together
+
+Grade:
+	Call grade calculation function with coursework and exam marks
 ```
 
-Main program
+Read students from file function
 
 ```
 Open file class_marks.csv for reading
@@ -83,9 +88,33 @@ For each line in list:
 	Split line into student name, coursework mark, and exam mark
 
 	Convert coursework mark and exam mark to integers
-	Call grade calculation function with coursework and exam marks
-	Set result to grade calculation function result
 
-	Create new Student object with student name and result
+	Create new Student object with student name and marks
 	Append new Student to Student list
+
+Return Student list
+```
+
+Count A passes function (takes Student list)
+
+```
+Set A passes to 0
+
+For each student in Student list:
+	If student grade is A:
+		Increment A passes by 1
+
+Return A passes
+```
+
+Find best student function (takes Student list)
+
+```
+Set best student to the first student
+
+For each student in the rest of the Student list:
+	If student total mark is greater than best student total mark:
+		Set best student to student
+
+Return best student
 ```
