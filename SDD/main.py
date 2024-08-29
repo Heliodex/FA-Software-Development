@@ -15,6 +15,7 @@ def calcGrade(courseworkMark: int, examMark: int) -> str:
     floatPercentage = totalMark / 1.5
     percentage = int(floatPercentage)
 
+    # Match total percentage against grade boundaries
     if 70 <= percentage:
         return "A"
     if 60 <= percentage:

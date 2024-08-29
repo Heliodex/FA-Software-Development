@@ -26,7 +26,7 @@
 
 ## Step 1
 
-Main program
+Grade calculation function
 
 ```
 Take coursework mark from input
@@ -48,6 +48,44 @@ Match percentage against:
 	45 <= % < 49 -> D
 	otherwise -> None
 giving grade for total course
+```
 
-Print grade for total course
+Main program
+
+```
+Take coursework mark from input
+Take exam mark from input
+
+Call grade calculation function with coursework and exam marks
+Set result to grade calculation function result
+Print result
+```
+
+## Step 2
+
+Student class
+
+```
+Name (string)
+Grade (string)
+```
+
+Main program
+
+```
+Open file class_marks.csv for reading
+Read lines from file into list
+Close file, freeing it from  memory
+
+Create empty list of Student objects
+
+For each line in list:
+	Split line into student name, coursework mark, and exam mark
+
+	Convert coursework mark and exam mark to integers
+	Call grade calculation function with coursework and exam marks
+	Set result to grade calculation function result
+
+	Create new Student object with student name and result
+	Append new Student to Student list
 ```
