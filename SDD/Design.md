@@ -71,6 +71,10 @@ Exam mark (integer)
 Total mark:
 	Add coursework and exam marks together
 
+Total percentage:
+	Divide total mark by max mark (150), giving float percentage
+	Multiply float percentage by 100, rounding to 1 decimal place
+
 Grade:
 	Call grade calculation function with coursework and exam marks
 ```
@@ -118,3 +122,11 @@ For each student in the rest of the Student list:
 
 Return best student
 ```
+
+## Relation to the fetch-execute cycle
+
+The program and its input is read, either from a file (disk) or from the user (stdin), into memory or CPU cache, with input accessible through variables in the program. The CPU activates the read line on the control bus to load program instructions (or their addresses, by activating the same line on the address bus) from memory into the program counter, and copies the data into the instruction register. 
+
+The CPU's control unit decodes the data in the instruction register, and executes each instruction by sending them to the corresponding components such as the arithmetic logic unit (ALU) or floating-point unit (FPU). This process may be executed once or multiple times on more modern CPUs, with the results stored in memory, registers, or sent to output devices like the display (stdout) by the processor . The process repeats until the program has finished executing.
+
+This is how programs written in machine code are executed on a computer, however as this implementation is written in Python, there are a few more layers of abstraction. The program directly executed by the CPU is the Python interpreter, a kind of virtual computer that reads and executes Python code instead of machine code. The Python interpreter reads and executes the program itself in a similar way the CPU would with a machine code program.
