@@ -1,4 +1,5 @@
-from main import calcGrade
+from step1 import calcGrade
+from step2 import readStudentsFromFile, countAPasses, findBestMark, Student
 import unittest
 
 test = unittest.TestCase()
@@ -39,5 +40,23 @@ equal(calcGrade(35, 35), "D")
 equal(calcGrade(35, 30), "None")
 equal(calcGrade(60, 0), "None")
 equal(calcGrade(0, 0), "None")
+
+# Student class testing
+equal(Student("Alice", 60, 90).totalMark, 150)
+
+# Step 2 testing
+students = readStudentsFromFile("class_marks.csv")
+equal(len(students), 15)
+
+aPasses = countAPasses(students)
+equal(aPasses, 4)
+
+bestStudent = findBestMark(students)
+equal(bestStudent.name, "Jessica Cooper")
+equal(bestStudent.courseworkMark, 55)
+equal(bestStudent.examMark, 82)
+equal(bestStudent.totalMark, 137)
+equal(bestStudent.totalPercentage, 91.3)
+equal(bestStudent.grade, "A")
 
 print("All tests passed successfully!")
