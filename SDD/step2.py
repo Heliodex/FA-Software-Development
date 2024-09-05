@@ -1,5 +1,7 @@
-from main import calcGrade
+from step1 import calcGrade
 from dataclasses import dataclass
+
+maxMark = 60 + 90
 
 
 @dataclass  # Allows for easy creation of classes with attributes
@@ -16,14 +18,21 @@ class Student:
         return self.courseworkMark + self.examMark
 
     @property
+    def totalPercentage(self) -> float:
+        """Calculates the total percentage mark for a student"""
+        floatPercentage = self.totalMark / maxMark
+        # Prevent repeating decimal digits with round(), as no more precision is needed
+        return round(floatPercentage * 100, 1)
+
+    @property
     def grade(self) -> str:
         """Calculates the grade for a student"""
         return calcGrade(self.courseworkMark, self.examMark)
 
 
-def readStudentsFromFile() -> list[Student]:
+def readStudentsFromFile(filename: str) -> list[Student]:
     """Reads students from a CSV file and returns them as a list of Student objects"""
-    file = open("class_marks.csv", "r")  # Reads file from disk into memory
+    file = open(filename, "r")  # Reads file from disk into memory
     lines = file.readlines()  # Splits file by newlines into a list
     file.close()  # Closes file, removing it from memory
 
