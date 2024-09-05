@@ -125,7 +125,7 @@ Return best student
 
 ## Relation to the fetch-execute cycle
 
-The program and its input is read, either from a file (disk) or from the user (stdin), into memory or CPU cache, with input accessible through variables in the program. The CPU activates the read line on the control bus to load program instructions (or their addresses, by activating the same line on the address bus) from memory into the program counter, and copies the data into the instruction register. 
+The program and its input is read, either from a file (disk) or from the user (stdin), into memory or CPU cache, with input accessible through variables in the program. The CPU activates the read line on the control bus and sending mimery addresses over the address bus to load program instructions (or their addresses) from memory into the program counter, and copies the data into the instruction register. 
 
 The CPU's control unit decodes the data in the instruction register, and executes each instruction by sending them to the corresponding components such as the arithmetic logic unit (ALU) or floating-point unit (FPU). This process may be executed once or multiple times on more modern CPUs, with the results stored in memory, registers, or sent to output devices like the display (stdout) by the processor . The process repeats until the program has finished executing.
 
