@@ -8,27 +8,37 @@ import (
 	"strings"
 )
 
-//go:embed *.html
-var files embed.FS
-
 var (
-	layoutT = template.Must(template.ParseFS(files, "layout.html"))
-	indexT  = template.Must(template.ParseFS(files, "index.html"))
+	//go:embed layout.html
+	layout string
+	//go:embed index.html
+	pages embed.FS
+	//go:embed static/*
+	static embed.FS
 )
 
-func toString(t *template.Template) (string, error) {
+var layoutT = template.Must(template.New("layout").Parse(layout))
+
+func toString(t *template.Template) template.HTML {
 	i := strings.Builder{}
-	err := t.Execute(&i, nil)
-	return i.String(), err
+	t.Execute(&i, nil)
+	return template.HTML(i.String())
+}
+
+var pathFiles = map[string]string{
+	"/": "index.html",
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	i, err := toString(indexT)
-	if err != nil {
-		panic(err)
+	filename, ok := pathFiles[r.URL.Path]
+	if !ok {
+		http.Error(w, "Not Found: "+r.URL.Path, http.StatusNotFound)
+		return
 	}
 
-	err = layoutT.Execute(w, template.HTML(i))
+	file, _ := template.ParseFS(pages, filename)
+
+	err := layoutT.Execute(w, toString(file))
 	if err != nil {
 		panic(err)
 	}
@@ -36,6 +46,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	http.HandleFunc("/", handler)
+	http.Handle("/static/", http.FileServer(http.FS(static)))
 
 	fmt.Println("Listening on port 8080")
 	http.ListenAndServe(":8080", nil)
