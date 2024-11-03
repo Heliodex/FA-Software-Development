@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"html/template"
 	"io"
 	"net/http"
@@ -13,6 +12,7 @@ import (
 type Templates map[string]*template.Template
 
 type Data struct {
+	Path  string
 	Title string
 }
 
@@ -24,9 +24,15 @@ func (t Templates) Render(w io.Writer, name string, data any, c echo.Context) er
 	return tmpl.ExecuteTemplate(w, "layout.html", data)
 }
 
+var pages = []Data{
+	{Path: "", Title: "Home"},
+	{Path: "page2", Title: "Page 2"},
+}
+
 func main() {
 	e := echo.New()
-	e.Static("/static", "static")
+	e.Logger.SetOutput(io.Discard)
+	e.Static("/", "static")
 
 	// turn the templates into a map
 	templates := make(Templates)
@@ -35,15 +41,16 @@ func main() {
 	}
 	e.Renderer = templates
 
-	e.GET("/", func(c echo.Context) (err error) {
-		err = c.Render(http.StatusOK, "index.html", Data{
-			Title: "Hello World",
-		})
-		if err != nil {
-			fmt.Println(err)
+	for _, v := range pages {
+		pageName := v.Path
+		if pageName == "" {
+			pageName = "index"
 		}
-		return
-	})
+
+		e.GET("/"+v.Path, func(c echo.Context) error {
+			return c.Render(http.StatusOK, pageName+".html", v)
+		})
+	}
 
 	panic(e.Start(":8080"))
 }
