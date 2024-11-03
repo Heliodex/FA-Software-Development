@@ -1,53 +1,55 @@
 package main
 
 import (
-	"embed"
+	"errors"
 	"fmt"
 	"html/template"
+	"io"
 	"net/http"
-	"strings"
+
+	"github.com/labstack/echo/v4"
 )
 
-var (
-	//go:embed layout.html
-	layout string
-	//go:embed index.html
-	pages embed.FS
-	//go:embed static/*
-	static embed.FS
-)
-
-var layoutT = template.Must(template.New("layout").Parse(layout))
-
-func toString(t *template.Template) template.HTML {
-	i := strings.Builder{}
-	t.Execute(&i, nil)
-	return template.HTML(i.String())
+type Template struct {
+	tmpl map[string]*template.Template
 }
 
-var pathFiles = map[string]string{
-	"/": "index.html",
+type Data struct {
+	Title string
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
-	filename, ok := pathFiles[r.URL.Path]
+func (t *Template) Render(w io.Writer, name string, data any, c echo.Context) error {
+	tmpl, ok := t.tmpl[name]
 	if !ok {
-		http.Error(w, "Not Found: "+r.URL.Path, http.StatusNotFound)
-		return
+		err := errors.New("Template not found -> " + name)
+		return err
 	}
-
-	file, _ := template.ParseFS(pages, filename)
-
-	err := layoutT.Execute(w, toString(file))
-	if err != nil {
-		panic(err)
-	}
+	return tmpl.ExecuteTemplate(w, "layout", data)
 }
+
+var pages = []string{"index.html"}
+
+var e = echo.New()
 
 func main() {
-	http.HandleFunc("/", handler)
-	http.Handle("/static/", http.FileServer(http.FS(static)))
+	e.Static("/static", "static")
 
-	fmt.Println("Listening on port 8080")
-	http.ListenAndServe(":8080", nil)
+	templates := make(map[string]*template.Template)
+	for _, v := range pages {
+		templates[v] = template.Must(template.ParseFiles("pages/"+v, "layout.html"))
+	}
+
+	e.Renderer = &Template{templates}
+
+	e.GET("/", func(c echo.Context) (err error) {
+		err = c.Render(http.StatusOK, "index.html", Data{
+			Title: "Hello World",
+		})
+		if err != nil {
+			fmt.Println(err)
+		}
+		return
+	})
+
+	panic(e.Start(":8080"))
 }
