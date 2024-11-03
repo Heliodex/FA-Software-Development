@@ -10,36 +10,30 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type Template struct {
-	tmpl map[string]*template.Template
-}
+type Templates map[string]*template.Template
 
 type Data struct {
 	Title string
 }
 
-func (t *Template) Render(w io.Writer, name string, data any, c echo.Context) error {
-	tmpl, ok := t.tmpl[name]
+func (t Templates) Render(w io.Writer, name string, data any, c echo.Context) error {
+	tmpl, ok := t[name]
 	if !ok {
-		err := errors.New("Template not found -> " + name)
-		return err
+		return errors.New("Template " + name + " not found")
 	}
-	return tmpl.ExecuteTemplate(w, "layout", data)
+	return tmpl.ExecuteTemplate(w, "layout.html", data)
 }
 
-var pages = []string{"index.html"}
-
-var e = echo.New()
-
 func main() {
+	e := echo.New()
 	e.Static("/static", "static")
 
-	templates := make(map[string]*template.Template)
-	for _, v := range pages {
-		templates[v] = template.Must(template.ParseFiles("pages/"+v, "layout.html"))
+	// turn the templates into a map
+	templates := make(Templates)
+	for _, v := range template.Must(template.ParseGlob("pages/*.html")).Templates() {
+		templates[v.Name()] = v
 	}
-
-	e.Renderer = &Template{templates}
+	e.Renderer = templates
 
 	e.GET("/", func(c echo.Context) (err error) {
 		err = c.Render(http.StatusOK, "index.html", Data{
