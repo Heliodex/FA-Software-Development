@@ -1,4 +1,3 @@
-{{define "layout"}}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,19 +5,35 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="/style.css">
-	<title>{{.Title}}</title>
+	<title>{{.Data.Title}}</title>
 </head>
 
 <body>
 	<header>
 		<a href="/">Home</a>
 		<a href="/page2">Page 2</a>
+
+		<style>
+			@scope {
+				a[href="/{{.Data.Path}}"] {
+					font-weight: bold;
+					color: white;
+				}
+			}
+		</style>
 	</header>
-	{{template "body" .}}
+
+	<main>
+		{{.Body}}
+	</main>
+
 	<footer>
 		footer
+
+		<div>
+			div
+		</div>
 	</footer>
 </body>
 
 </html>
-{{end}}

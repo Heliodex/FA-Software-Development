@@ -1,32 +1,44 @@
 package main
 
 import (
-	"errors"
+	"fmt"
 	"html/template"
 	"io"
 	"net/http"
+	"strings"
 
 	"github.com/labstack/echo/v4"
 )
 
-type Templates map[string]*template.Template
+type Templates struct{ *template.Template }
+
+var layout = template.Must(template.ParseFiles("layout.html"))
+
+func (t Templates) Render(w io.Writer, name string, data any, c echo.Context) error {
+	b := &strings.Builder{}
+	if err := t.ExecuteTemplate(b, name, data); err != nil {
+		return err
+	}
+
+	if err := layout.ExecuteTemplate(w, "layout.html", echo.Map{
+		"Data": data,
+		"Body": template.HTML(b.String()),
+	}); err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	return nil
+}
 
 type Data struct {
 	Path  string
 	Title string
 }
 
-func (t Templates) Render(w io.Writer, name string, data any, c echo.Context) error {
-	tmpl, ok := t[name]
-	if !ok {
-		return errors.New("Template " + name + " not found")
-	}
-	return tmpl.ExecuteTemplate(w, "layout.html", data)
-}
-
 var pages = []Data{
-	{Path: "", Title: "Home"},
-	{Path: "page2", Title: "Page 2"},
+	{"", "Home"},
+	{"page2", "Page 2"},
 }
 
 func main() {
@@ -35,11 +47,7 @@ func main() {
 	e.Static("/", "static")
 
 	// turn the templates into a map
-	templates := make(Templates)
-	for _, v := range template.Must(template.ParseGlob("pages/*.html")).Templates() {
-		templates[v.Name()] = v
-	}
-	e.Renderer = templates
+	e.Renderer = Templates{template.Must(template.ParseGlob("pages/*.html"))}
 
 	for _, v := range pages {
 		pageName := v.Path
