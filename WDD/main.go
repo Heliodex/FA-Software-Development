@@ -38,7 +38,7 @@ type Data struct {
 
 var pages = []Data{
 	{"", "Home"},
-	{"page2", "Page 2"},
+	{"contact", "Contact"},
 }
 
 func main() {
@@ -56,9 +56,14 @@ func main() {
 		}
 
 		e.GET("/"+v.Path, func(c echo.Context) error {
+			// reload the template for each request (dev)
+			layout = template.Must(template.ParseFiles("layout.html"))
+			e.Renderer = Templates{template.Must(template.ParseFiles("pages/"+pageName+".html"))}
+
 			return c.Render(http.StatusOK, pageName+".html", v)
 		})
 	}
 
+	fmt.Println("Listening on :8080")
 	panic(e.Start(":8080"))
 }

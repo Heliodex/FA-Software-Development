@@ -6,21 +6,45 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="/style.css">
 	<title>{{.Data.Title}}</title>
+
+	<script>
+		setTimeout(async () => {
+			// reload by fetching the same page
+			const f = await fetch(window.location.href)
+			const data = await f.text()
+			document.open()
+			document.write(data)
+			document.close()
+		}, 300)
+	</script>
 </head>
 
 <body>
 	<header>
-		<a href="/">Home</a>
-		<a href="/page2">Page 2</a>
+		<h1>Kirkstead Farm</h1>
+		<ul>
+			<li><a href="/">Home</a></li>
+			<li><a href="/contact">Contact</a></li>
+		</ul>
 
 		<style>
 			@scope {
+				ul {
+					display: flex;
+					gap: 1rem;
+					list-style: none;
+					margin: 0;
+					padding: 0.5rem;
+				}
+
 				a[href="/{{.Data.Path}}"] {
 					font-weight: bold;
 					color: white;
 				}
 			}
 		</style>
+
+		<hr>
 	</header>
 
 	<main>
@@ -28,11 +52,8 @@
 	</main>
 
 	<footer>
-		footer
-
-		<div>
-			div
-		</div>
+		<hr>
+		<small>Kirkstead Farm &ndash; Last updated 12 November 2024</small>
 	</footer>
 </body>
 

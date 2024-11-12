@@ -1,8 +1,38 @@
 :root {
 	background: black;
 	color: white;
+	display: flex;
+	/* flex centre the body inside html */
+	height: 100vh;
+	justify-content: center;
+}
+
+* {
+	box-sizing: border-box;
 }
 
 a {
 	color: cyan;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0;
+}
+
+body {
+	width: 40rem;
+	max-width: 40rem;
+}
+
+address {
+	padding-left: 1rem;
+}
+
+main {
+	padding: 1rem 0;
 }
