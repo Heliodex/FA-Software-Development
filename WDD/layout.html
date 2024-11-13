@@ -21,14 +21,31 @@
 
 <body>
 	<header>
-		<h1>Kirkstead Farm</h1>
-		<ul>
-			<li><a href="/">Home</a></li>
-			<li><a href="/contact">Contact</a></li>
-		</ul>
+		<div id="top">
+			<h1>Kirkstead Farm</h1>
+			<nav>
+				<ul>
+					<li><a href="/">Home</a></li>
+					<li><a href="/contact">Contact</a></li>
+				</ul>
+			</nav>
+		</div>
 
 		<style>
 			@scope {
+				#top {
+					display: flex;
+					justify-content: space-between;
+				}
+
+				nav {
+					background: #222;
+					border: 1px solid grey;
+					display: inline-block;
+					border-radius: 0.5rem;
+					padding: 0 0.2rem;
+				}
+
 				ul {
 					display: flex;
 					gap: 1rem;
