@@ -1,3 +1,8 @@
+@font-face {
+	font-family: "DM Serif";
+	src: url("/DM Serif.woff2") format("woff2");
+}
+
 :root {
 	background: #111;
 	color: white;
@@ -16,17 +21,18 @@
 
 a {
 	color: cyan;
+	text-decoration: none;
 }
 
 h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h2 {
 	margin: 0;
-	font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+	font-family: "Lucida Handwriting", cursive;
 	display: inline-block;
+}
+
+h1 {
+	font-family: "DM Serif", serif;
 }
 
 body {
@@ -40,4 +46,11 @@ address {
 
 main {
 	padding: 1rem 0;
+}
+
+#top,
+#bottom {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }

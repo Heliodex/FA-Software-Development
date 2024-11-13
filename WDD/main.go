@@ -39,6 +39,7 @@ type Data struct {
 var pages = []Data{
 	{"", "Home"},
 	{"contact", "Contact"},
+	{"gallery", "Gallery"},
 }
 
 func main() {
@@ -58,7 +59,7 @@ func main() {
 		e.GET("/"+v.Path, func(c echo.Context) error {
 			// reload the template for each request (dev)
 			layout = template.Must(template.ParseFiles("layout.html"))
-			e.Renderer = Templates{template.Must(template.ParseFiles("pages/"+pageName+".html"))}
+			e.Renderer = Templates{template.Must(template.ParseFiles("pages/" + pageName + ".html"))}
 
 			return c.Render(http.StatusOK, pageName+".html", v)
 		})
