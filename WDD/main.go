@@ -10,13 +10,27 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type Templates struct{ *template.Template }
-
 var layout = template.Must(template.ParseFiles("layout.html"))
 
-func (t Templates) Render(w io.Writer, name string, data any, c echo.Context) error {
+type Data struct {
+	Path, Title, Template string
+}
+
+var pages = []Data{
+	{"/", "Home", "pages/index.html"},
+	{"/contact", "Contact", "pages/contact.html"},
+	{"/visit", "Visit", "pages/visit/index.html"},
+	{"/visit/walks", "Walks", "pages/visit/walks.html"},
+	{"/gallery", "Gallery", "pages/gallery.html"},
+}
+
+type Renderer struct{}
+
+func (r Renderer) Render(w io.Writer, name string, data any, c echo.Context) error {
+	t := template.Must(template.ParseFiles(name))
+
 	b := &strings.Builder{}
-	if err := t.ExecuteTemplate(b, name, data); err != nil {
+	if err := t.ExecuteTemplate(b, t.Name(), data); err != nil {
 		return err
 	}
 
@@ -31,37 +45,20 @@ func (t Templates) Render(w io.Writer, name string, data any, c echo.Context) er
 	return nil
 }
 
-type Data struct {
-	Path  string
-	Title string
-}
-
-var pages = []Data{
-	{"", "Home"},
-	{"contact", "Contact"},
-	{"gallery", "Gallery"},
-}
-
 func main() {
 	e := echo.New()
 	e.Logger.SetOutput(io.Discard)
 	e.Static("/", "static")
 
-	// turn the templates into a map
-	e.Renderer = Templates{template.Must(template.ParseGlob("pages/*.html"))}
+	// custom echo renderer
+	e.Renderer = Renderer{}
 
 	for _, v := range pages {
-		pageName := v.Path
-		if pageName == "" {
-			pageName = "index"
-		}
-
-		e.GET("/"+v.Path, func(c echo.Context) error {
-			// reload the template for each request (dev)
-			layout = template.Must(template.ParseFiles("layout.html"))
-			e.Renderer = Templates{template.Must(template.ParseFiles("pages/" + pageName + ".html"))}
-
-			return c.Render(http.StatusOK, pageName+".html", v)
+		e.GET(v.Path, func(c echo.Context) (err error) {
+			if err = c.Render(http.StatusOK, v.Template, v); err != nil {
+				fmt.Println(err)
+			}
+			return err
 		})
 	}
 

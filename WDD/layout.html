@@ -10,7 +10,6 @@
 	<title>{{.Data.Title}} &ndash; Kirkstead Farm</title>
 
 	<script>
-		// if (false)
 		setTimeout(async () => {
 			// reload by fetching the same page
 			const f = await fetch(window.location.href)
@@ -30,6 +29,7 @@
 				<ul>
 					<li><a href="/">Home</a></li>
 					<li><a href="/contact">Contact</a></li>
+					<li><a href="/visit">Visit</a></li>
 					<li><a href="/gallery">Gallery</a></li>
 				</ul>
 			</nav>
@@ -38,8 +38,8 @@
 		<style>
 			@scope {
 				nav {
-					background: #222;
-					border: 1px solid grey;
+					background: #555;
+					border: 1px solid white;
 					border-radius: 0.5rem;
 					padding: 0 0.2rem;
 				}
@@ -49,7 +49,7 @@
 					gap: 1rem;
 					list-style: none;
 					margin: 0;
-					padding: 0.5rem ;
+					padding: 0.5rem;
 				}
 
 				a[href="/{{.Data.Path}}"] {

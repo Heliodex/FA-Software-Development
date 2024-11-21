@@ -4,7 +4,7 @@
 }
 
 :root {
-	background: #111;
+	background-image: url("/farm.webp");
 	color: white;
 
 	/* flex centre the body inside html */
@@ -12,6 +12,7 @@
 	height: 100vh;
 	justify-content: center;
 
+	margin: 0;
 	font-family: Lexend, sans-serif;
 }
 
@@ -25,7 +26,8 @@ a {
 }
 
 h1,
-h2 {
+h2,
+h3 {
 	margin: 0;
 	font-family: "Lucida Handwriting", cursive;
 	display: inline-block;
@@ -36,8 +38,11 @@ h1 {
 }
 
 body {
-	width: 40rem;
-	max-width: 40rem;
+	background: hsl(96 100% 14%);
+	padding: 0.75rem;
+	width: 45rem;
+	max-width: 45rem;
+	border-radius: 1rem;
 }
 
 address {
@@ -45,12 +50,21 @@ address {
 }
 
 main {
-	padding: 1rem 0;
+	padding: 1rem 0.75rem;
 }
 
 #top,
 #bottom {
 	display: flex;
 	justify-content: space-between;
-	align-items: center;
+	align-items: start;
+}
+
+a,
+button {
+	cursor: pointer;
+}
+
+a:hover {
+	text-decoration: underline;
 }
