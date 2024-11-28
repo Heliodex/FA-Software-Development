@@ -1,13 +1,28 @@
 <div>
-
+	{{range $x := .Images}}
+	<a href="/gallery/og{{$x}}.webp">
+		<img src="/gallery/{{$x}}.webp">
+	</a>
+	{{end}}
 </div>
 
 <style>
 	@scope {
 		div {
-			border: 1px solid cyan;
-			padding: 1rem;
-			width: 20rem;
+			display: grid;
+			grid-template-columns: 1fr 1fr 1fr;
+			gap: 2rem;
+			padding: 0 1rem;
+		}
+
+		img {
+			width: 100%;
+			border-radius: 0.5rem;
+
+			transition: all 0.2s ease-in-out;
+			&:hover {
+				transform: scale(1.1);
+			}
 		}
 	}
 </style>

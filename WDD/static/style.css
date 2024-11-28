@@ -3,13 +3,30 @@
 	src: url("/DM Serif.woff2") format("woff2");
 }
 
+/* Crossfade animation */
+@view-transition {
+	navigation: auto;
+}
+
+#background {
+	/* make background image cover the whole screen */
+	background-image: url("/selkirk.jpg");
+	background-size: cover;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+	view-transition-name: none;
+}
+
 :root {
-	background-image: url("/farm.webp");
 	color: white;
 
 	/* flex centre the body inside html */
 	display: flex;
-	height: 100vh;
+	min-height: 100vh;
 	justify-content: center;
 
 	margin: 0;
@@ -23,6 +40,7 @@
 a {
 	color: cyan;
 	text-decoration: none;
+	cursor: pointer;
 }
 
 h1,
@@ -37,7 +55,7 @@ h1 {
 	font-family: "DM Serif", serif;
 }
 
-body {
+#main {
 	background: hsl(96 100% 14%);
 	padding: 0.75rem;
 	width: 45rem;
@@ -58,6 +76,14 @@ main {
 	display: flex;
 	justify-content: space-between;
 	align-items: start;
+}
+
+header {
+	view-transition-name: none;
+}
+
+footer {
+	view-transition-name: none;
 }
 
 a,

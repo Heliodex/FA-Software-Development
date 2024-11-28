@@ -8,72 +8,66 @@
 	<link rel="icon"
 		href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌳</text></svg>">
 	<title>{{.Data.Title}} &ndash; Kirkstead Farm</title>
-
-	<script>
-		setTimeout(async () => {
-			// reload by fetching the same page
-			const f = await fetch(window.location.href)
-			const data = await f.text()
-			document.open()
-			document.write(data)
-			document.close()
-		}, 300)
-	</script>
 </head>
 
 <body>
-	<header>
-		<div id="top">
-			<h1>🌳 Kirkstead Farm</h1>
-			<nav>
-				<ul>
-					<li><a href="/">Home</a></li>
-					<li><a href="/contact">Contact</a></li>
-					<li><a href="/visit">Visit</a></li>
-					<li><a href="/gallery">Gallery</a></li>
-				</ul>
-			</nav>
-		</div>
+	<div id="background"></div>
 
-		<style>
-			@scope {
-				nav {
-					background: #555;
-					border: 1px solid white;
-					border-radius: 0.5rem;
-					padding: 0 0.2rem;
+	<div id="main">
+
+		<header>
+			<div id="top">
+				<h1>🌳 Kirkstead Farm</h1>
+				<nav>
+					<ul>
+						<li><a href="/">Home</a></li>
+						<li><a href="/contact">Contact</a></li>
+						<li><a href="/visit">Visit</a></li>
+						<li><a href="/gallery">Gallery</a></li>
+					</ul>
+				</nav>
+			</div>
+	
+			<style>
+				@scope {
+					nav {
+						background: #555;
+						border: 1px solid white;
+						border-radius: 0.5rem;
+						padding: 0 0.2rem;
+					}
+	
+					ul {
+						display: flex;
+						gap: 1rem;
+						list-style: none;
+						margin: 0;
+						padding: 0.5rem;
+					}
+	
+					a[href="/{{.Data.Path}}"] {
+						font-weight: bold;
+						color: white;
+					}
 				}
-
-				ul {
-					display: flex;
-					gap: 1rem;
-					list-style: none;
-					margin: 0;
-					padding: 0.5rem;
-				}
-
-				a[href="/{{.Data.Path}}"] {
-					font-weight: bold;
-					color: white;
-				}
-			}
-		</style>
-
-		<hr>
-		<h2>{{.Data.Title}}</h2>
-	</header>
-
-	<main>
-		{{.Body}}
-	</main>
-
-	<footer>
-		<hr>
-		<small id="bottom">
-			Kirkstead Farm &ndash; Last updated 12 November 2024
-			<a href="https://github.com/Heliodex/FA-Software-Development/tree/main/WDD">Source code</a>
-		</small>
-	</footer>
+			</style>
+	
+			<hr>
+			<h2>{{.Data.Title}}</h2>
+		</header>
+	
+		<main>
+			{{.Body}}
+		</main>
+	
+		<footer>
+			<hr>
+			<small id="bottom">
+				Kirkstead Farm &ndash; Last updated 28 November 2024
+				<a href="https://github.com/Heliodex/FA-Software-Development/tree/main/WDD">Source code</a>
+			</small>
+		</footer>
+	</div>
 </body>
 
 </html>
