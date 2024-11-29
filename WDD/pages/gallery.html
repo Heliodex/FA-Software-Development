@@ -13,6 +13,16 @@
 			grid-template-columns: 1fr 1fr 1fr;
 			gap: 2rem;
 			padding: 0 1rem;
+
+			@media screen and (width < 600px) {
+				grid-template-columns: 1fr 1fr;
+				gap: 1.5rem;
+			}
+			@media screen and (width < 350px) {
+				grid-template-columns: 1fr;
+				gap: 1rem;
+				padding: 0;
+			}
 		}
 
 		img {
@@ -20,6 +30,7 @@
 			border-radius: 0.5rem;
 
 			transition: all 0.2s ease-in-out;
+
 			&:hover {
 				transform: scale(1.1);
 			}

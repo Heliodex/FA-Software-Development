@@ -2,7 +2,8 @@
 	Menu options for our café are displayed below.
 </p>
 
-<h3>Meals</h3>
+{{range $v := .Menu}}
+<h3>{{index $v 0}}</h3>
 
 <table>
 	<thead>
@@ -12,89 +13,19 @@
 		</tr>
 	</thead>
 	<tbody>
+		{{range $x := index $v 1}}
 		<tr>
-			<td>Soup of the day, with fresh sourdough</td>
-			<td>£5.50</td>
+			<td>{{index $x 0}}
+				{{if not (eq (index $x 1) "")}}
+				<small>({{index $x 1}})</small>
+				{{end}}
+			</td>
+			<td>{{index $x 2}}</td>
 		</tr>
-		<tr>
-			<td>Full breakfast (tattie scones not forgotten!)</td>
-			<td>£8.00</td>
-		</tr>
-		<tr>
-			<td>Toasted filled paninis <small>(V/VV available)</small></td>
-			<td>£6.00</td>
-		</tr>
-		<tr>
-			<td>Ham and cheese sandwich with salad</td>
-			<td>£3.20</td>
-		</tr>
-		<tr>
-			<td>Vegetable chilli beans with rice <small>(VV)</small></td>
-			<td>£5.80</td>
-		</tr>
+		{{end}}
 	</tbody>
 </table>
-
-<h3>Sides</h3>
-
-<table>
-	<thead>
-		<tr>
-			<td>Menu option</td>
-			<td>Pricing</td>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>Roasted tatties with garlic and rosemary <small>(VV)</small></td>
-			<td>£2.50</td>
-		</tr>
-		<tr>
-			<td>Side salad <small>(VV)</small></td>
-			<td>£2.00</td>
-		</tr>
-		<tr>
-			<td>Chunky chips with dipping sauces <small>(VV)</small></td>
-			<td>£2.00</td>
-		</tr>
-	</tbody>
-</table>
-
-<h3>Drinks</h3>
-
-<table>
-	<thead>
-		<tr>
-			<td>Menu option</td>
-			<td>Pricing</td>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>Coffee, black/white <small>(V/VV)</small></td>
-			<td>£2.00</td>
-		</tr>
-		<td>Decaf coffee, black/white <small>(V/VV)</small></td>
-		<td>£2.00</td>
-		</tr>
-		<tr>
-			<td>Tea <small>(V/VV)</small></td>
-			<td>£2.00</td>
-		</tr>
-		<tr>
-			<td>Decaf tea <small>(V/VV)</small></td>
-			<td>£2.00</td>
-		</tr>
-		<tr>
-			<td>Fresh-pressed orange juice <small>(VV)</small></td>
-			<td>£1.50</td>
-		</tr>
-		<tr>
-			<td>Fresh-pressed apple & blackcurrant juice <small>(VV)</small></td>
-			<td>£1.50</td>
-		</tr>
-	</tbody>
-</table>
+{{end}}
 
 <small>
 	<br>

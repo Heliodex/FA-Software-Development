@@ -3,20 +3,25 @@
 </p>
 
 <ul>
+	{{range $v := .Animals}}
 	<li>
-		<b>Bella</b> is our resident majestic Highland cow. They are very friendly, curious, and loves strokes! <br>
-		<img src="/Bella.jfif" alt="Bella">
+		<b>{{index $v 0}}</b> 
+		<p>
+			{{index $v 1}}
+		</p>
+		<img src="/{{index $v 0}}.webp" alt="{{index $v 0}}">
 	</li>
-	<li>
-		<b>animal 2 </b>
-	</li>
+	{{end}}
 </ul>
 
 <style>
 	@scope {
+		li {
+			padding-bottom: 1rem;
+		}
 		img {
-			width: 30%;
-			padding: 1rem 0;
+			height: 9rem;
+			border-radius: 0.5rem;
 		}
 	}
 </style>

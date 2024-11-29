@@ -30,6 +30,10 @@
 	justify-content: center;
 
 	margin: 0;
+}
+
+:root,
+button {
 	font-family: Lexend, sans-serif;
 }
 
@@ -58,7 +62,7 @@ h1 {
 #main {
 	background: hsl(96 100% 14%);
 	padding: 0.75rem;
-	width: 45rem;
+	width: 98vw;
 	max-width: 45rem;
 	border-radius: 1rem;
 }
@@ -71,11 +75,63 @@ main {
 	padding: 1rem 0.75rem;
 }
 
+#bignav {
+	@media screen and (width < 600px) {
+		display: none;
+	}
+}
+
+#smallnav {
+	cursor: pointer;
+	padding: 0.25rem 0.5rem;
+	border: 1px solid white;
+	border-radius: 0.5rem;
+	font-size: 1rem;
+	align-self: end;
+	background: white;
+	transition: all 0.2s ease-in-out;
+
+	&:hover {
+		background: #aaa;
+		color: black;
+	}
+
+	@media screen and (width >= 600px) {
+		display: none;
+	}
+}
+
+[popover] {
+	border: none;
+	transition: all 0.2s ease-in-out;
+	border-radius: 0.5rem;
+	background: transparent;
+	outline: transparent;
+	filter: drop-shadow(0 20px 13px rgba(255, 255, 255, 0.02))
+		drop-shadow(0 8px 5px rgba(255, 255, 255, 0.05));
+	max-height: calc(100vh - 5rem);
+
+	@starting-style {
+		opacity: 0;
+		translate: 0 2rem;
+	}
+
+	&::backdrop {
+		transition: all 0.3s;
+		background: black;
+		opacity: 0.5;
+	}
+}
+
 #top,
 #bottom {
 	display: flex;
 	justify-content: space-between;
 	align-items: start;
+
+	@media screen and (width < 600px) {
+		flex-direction: column;
+	}
 }
 
 header {

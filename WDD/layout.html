@@ -18,7 +18,7 @@
 		<header>
 			<div id="top">
 				<h1>🌳 Kirkstead Farm</h1>
-				<nav>
+				<nav id="bignav">
 					<ul>
 						<li><a href="/">Home</a></li>
 						<li><a href="/contact">Contact</a></li>
@@ -26,8 +26,20 @@
 						<li><a href="/gallery">Gallery</a></li>
 					</ul>
 				</nav>
+				<button id="smallnav" popovertarget="menu">Menu</button>
+
+				<div id="menu" popover="auto">
+					<nav>
+						<ul>
+							<li><a href="/">Home</a></li>
+							<li><a href="/contact">Contact</a></li>
+							<li><a href="/visit">Visit</a></li>
+							<li><a href="/gallery">Gallery</a></li>
+						</ul>
+					</nav>
+				</div>
 			</div>
-	
+
 			<style>
 				@scope {
 					nav {
@@ -36,7 +48,7 @@
 						border-radius: 0.5rem;
 						padding: 0 0.2rem;
 					}
-	
+
 					ul {
 						display: flex;
 						gap: 1rem;
@@ -44,22 +56,30 @@
 						margin: 0;
 						padding: 0.5rem;
 					}
-	
+
+					#menu nav {
+						padding: 0.5rem;
+
+						& ul {
+							flex-direction: column;
+						}
+					}
+
 					a[href="/{{.Data.Path}}"] {
 						font-weight: bold;
 						color: white;
 					}
 				}
 			</style>
-	
+
 			<hr>
 			<h2>{{.Data.Title}}</h2>
 		</header>
-	
+
 		<main>
 			{{.Body}}
 		</main>
-	
+
 		<footer>
 			<hr>
 			<small id="bottom">

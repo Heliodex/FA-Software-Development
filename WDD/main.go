@@ -30,6 +30,36 @@ var pageData = map[string]map[string]any{
 	"pages/gallery.html": {
 		"Images": []int{1, 2, 3, 4, 5},
 	},
+	"pages/visit/café.html": {
+		"Menu": [][2]any{
+			{"Meals", [][3]string{
+				{"Soup of the day, with fresh sourdough", "", "£5.50"},
+				{"Full breakfast (tattie scones not forgotten!)", "", "£8.00"},
+				{"Toasted filled paninis", "V/VV available", "£6.00"},
+				{"Ham and cheese sandwich with salad", "", "£3.20"},
+				{"Vegetable chilli beans with rice", "VV", "£5.80"},
+			}},
+			{"Sides", [][3]string{
+				{"Roasted tatties with garlic and rosemary", "VV", "£2.50"},
+				{"Side salad", "VV", "£2.00"},
+				{"Chunky chips with dipping sauces", "VV", "£2.00"},
+			}},
+			{"Drinks", [][3]string{
+				{"Coffee, black/white", "V/VV", "£2.00"},
+				{"Decaf coffee, black/white", "V/VV", "£2.00"},
+				{"Tea", "V/VV", "£2.00"},
+				{"Decaf tea", "V/VV", "£2.00"},
+				{"Fresh-pressed orange juice", "VV", "£1.50"},
+				{"Fresh-pressed apple & blackcurrant juice", "VV", "£1.50"},
+			}},
+		},
+	},
+	"pages/visit/pettingzoo.html": {
+		"Animals": [][2]any{
+			{"Bella", "Bella is our resident majestic Highland cow. They are very friendly, curious, and loves strokes!"},
+			{"Hens", "We have five hens, two of which (Natasha and Jenny) are very friendly and curious. The others are a little more feisty."},
+		},
+	},
 }
 
 var layout = template.Must(template.ParseFiles("layout.html"))
