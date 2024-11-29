@@ -24,11 +24,18 @@ var pages = []Data{
 	{"/gallery", "Gallery", "pages/gallery.html"},
 }
 
-type Renderer struct{}
-
 var pageData = map[string]map[string]any{
 	"pages/gallery.html": {
 		"Images": []int{1, 2, 3, 4, 5},
+	},
+	"pages/visit/walks.html": {
+		"Walks": [][2]string{
+			{"The Stag", "This is a short walk that takes you through the farm and surrounding area."},
+			{"The Highland Cow", "A longer, relaxing walk along the paths on low level around the Selkirk area, with picturesque scenery."},
+			{"The Beaver", "A walk along the Kirkstead Burn, passing by the nearby forested areas and St Mary's Loch. Perfect for skimming stones!"},
+			{"The Pine Marten", "A trek through the deeper parts of the forest, with some birdwatching and squirrel-spotting opportunities along the way."},
+			{"The Wild Haggis", "A hike through the higher-level hills and meadows of the area, with great views of the farm from above. Maybe you'll even spot one of our wild haggi!"},
+		},
 	},
 	"pages/visit/café.html": {
 		"Menu": [][2]any{
@@ -64,6 +71,8 @@ var pageData = map[string]map[string]any{
 
 var layout = template.Must(template.ParseFiles("layout.html"))
 
+type Renderer struct{}
+
 func (r Renderer) Render(w io.Writer, name string, data any, c echo.Context) (err error) {
 	t := template.Must(template.ParseFiles(name))
 
@@ -91,10 +100,7 @@ func main() {
 
 	for _, v := range pages {
 		e.GET(v.Path, func(c echo.Context) (err error) {
-			if err = c.Render(http.StatusOK, v.Template, v); err != nil {
-				fmt.Println(err)
-			}
-			return err
+			return c.Render(http.StatusOK, v.Template, v)
 		})
 	}
 

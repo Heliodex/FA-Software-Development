@@ -1,7 +1,7 @@
 <div>
 	{{range $x := .Images}}
 	<a href="/gallery/og{{$x}}.webp">
-		<img src="/gallery/{{$x}}.webp">
+		<img srcset="/gallery/{{$x}}.webp 1x, /gallery/og{{$x}}.webp 5x" src="/gallery/{{$x}}.webp">
 	</a>
 	{{end}}
 </div>
@@ -18,6 +18,7 @@
 				grid-template-columns: 1fr 1fr;
 				gap: 1.5rem;
 			}
+
 			@media screen and (width < 350px) {
 				grid-template-columns: 1fr;
 				gap: 1rem;
@@ -31,7 +32,8 @@
 
 			transition: all 0.2s ease-in-out;
 
-			&:hover {
+			&:hover,
+			&:focus {
 				transform: scale(1.1);
 			}
 		}
