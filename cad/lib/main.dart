@@ -1,81 +1,117 @@
 import "package:flutter/material.dart";
 
-class HomePageState extends State<HomePage> {
-  int counter = 0;
+class NavigationState extends State<Navigation> {
+  var currentPageIndex = 0;
+  var counter = 0;
 
-  void incrementCounter() {
+  incrementCounter() {
     setState(() {
       counter++;
     });
   }
 
+  destinationSelected(index) {
+    setState(() {
+      currentPageIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text("whats up"),
+      bottomNavigationBar: NavigationBar(
+        backgroundColor: Colors.purple[900],
+        onDestinationSelected: destinationSelected,
+        indicatorColor: Colors.purpleAccent[700],
+        selectedIndex: currentPageIndex,
+        destinations: const <Widget>[
+          NavigationDestination(
+            selectedIcon: Icon(Icons.home),
+            icon: Icon(Icons.home_outlined),
+            label: "Home",
+          ),
+          NavigationDestination(
+            icon: Badge(child: Icon(Icons.notifications_sharp)),
+            label: "Notifications",
+          ),
+        ],
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              "Basic counter application nerd",
+      body: [
+        /// Home page
+        Card(
+          shadowColor: Colors.transparent,
+          margin: const EdgeInsets.all(8.0),
+          child: SizedBox.expand(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Home page",
+                  style: theme.textTheme.titleLarge,
+                ),
+                const Text(
+                  "Basic counter application nerd",
+                ),
+                Text(
+                  "Number $counter",
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+              ],
             ),
-            Text(
-              "Number $counter",
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+          ),
         ),
-      ),
+
+        /// Notifications page
+        const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Column(
+            children: <Widget>[
+              Card(
+                child: ListTile(
+                  leading: Icon(Icons.notifications_sharp),
+                  title: Text("Notification 1"),
+                  subtitle: Text("Bitcoin button"),
+                ),
+              ),
+              Card(
+                child: ListTile(
+                  leading: Icon(Icons.notifications_sharp),
+                  title: Text("Notification 2"),
+                  subtitle: Text("Increment from anywhere"),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ][currentPageIndex],
       floatingActionButton: FloatingActionButton(
         onPressed: incrementCounter,
         tooltip: "Increment",
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.currency_bitcoin),
       ),
     );
   }
 }
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+class Navigation extends StatefulWidget {
+  const Navigation({super.key});
 
   @override
-  State<HomePage> createState() => HomePageState();
+  createState() => NavigationState();
 }
 
-final app = MaterialApp(
-  title: "Flutter Demo",
-  theme: ThemeData(
-    // This is the theme of your application.
-    colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-    useMaterial3: true,
-  ),
-  home: const HomePage(),
-);
+// class helps with hot reloading
+class App extends StatelessWidget {
+  const App({super.key});
 
-void main() {
-  runApp(app);
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(useMaterial3: true, brightness: Brightness.dark),
+      home: const Navigation(),
+    );
+  }
 }
+
+void main() => runApp(const App());
