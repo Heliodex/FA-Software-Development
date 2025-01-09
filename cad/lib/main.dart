@@ -1,13 +1,270 @@
 import "package:flutter/material.dart";
+import "package:material_symbols_icons/symbols.dart";
+
+class Notification {
+  IconData icon;
+  String title, subtitle;
+  Notification(this.icon, this.title, this.subtitle);
+}
+
+class Milestone {
+  String title;
+  bool completed = false;
+  Milestone(this.title);
+}
+
+class Target {
+  String title;
+  double progress = 0;
+  List<Milestone> milestones = [];
+  Target(this.title);
+}
+
+class Recipe {
+  String title;
+  Recipe(this.title);
+}
+
+class TargetPageState extends State<TargetPage> {
+  final Target e;
+  final Function() removeTarget;
+  TargetPageState(this.e, this.removeTarget);
+
+  addMilestone() {
+    var name = "";
+
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text("Create a milestone"),
+              const SizedBox(height: 15),
+
+              //  input box
+              TextField(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Milestone name",
+                ),
+                onChanged: (value) async {
+                  name = value;
+                },
+              ),
+              const SizedBox(height: 15),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  setState(() {
+                    e.milestones.add(Milestone(name));
+                  });
+                },
+                child: const Text("Add milestone"),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(context) => Scaffold(
+        appBar: AppBar(title: const Text("Edit target")),
+        body: Column(
+          children: [
+            const SizedBox(height: 15),
+            Text("Edit target: ${e.title}"),
+            const SizedBox(height: 15),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("${(e.progress * 100).floor()}% done"),
+                  const SizedBox(height: 5),
+                  LinearProgressIndicator(
+                    value: e.progress,
+                    minHeight: 10,
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(height: 15),
+
+            // milestones
+            Column(
+              children: e.milestones
+                  .map<ListTile>(
+                    (m) => ListTile(
+                      title: Text(m.title),
+                      subtitle: const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Incomplete"),
+                        ],
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+
+            // add milestone button
+            ElevatedButton(
+              onPressed: () {
+                addMilestone();
+              },
+              child: const Text("Add milestone"),
+            ),
+
+            const SizedBox(height: 15),
+            Column(
+              children: [
+                if (e.progress < 1)
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      setState(() {
+                        e.progress += 0.1;
+                      });
+                    },
+                    child: const Text("Update progress"),
+                  ),
+
+                //   delete button
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    setState(() {
+                      removeTarget();
+                    });
+                  },
+                  child: const Text("Delete target"),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+}
+
+class TargetPage extends StatefulWidget {
+  final Target e;
+  final Function() removeTarget;
+  const TargetPage(this.e, this.removeTarget, {super.key});
+
+  @override
+  createState() => TargetPageState(e, removeTarget);
+}
 
 class NavigationState extends State<Navigation> {
   var currentPageIndex = 0;
-  var counter = 0;
 
-  incrementCounter() {
-    setState(() {
-      counter++;
-    });
+  List<Notification> notifications = [
+    Notification(Symbols.dinner_dining, "Notifications", "sup"),
+    Notification(Symbols.dinner_dining, "Notification 2", "sup"),
+  ];
+  List<Target> targets = [];
+  List<Recipe> recipes = [];
+
+  addTarget() {
+    var name = "";
+
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text("Create a target"),
+              const SizedBox(height: 15),
+
+              //  input box
+              TextField(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Target name",
+                ),
+                onChanged: (value) async {
+                  name = value;
+                },
+              ),
+              const SizedBox(height: 15),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  setState(() {
+                    targets.add(Target(name));
+                  });
+                },
+                child: const Text("Add target"),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  addRecipe() {
+    var name = "";
+
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text("Create a recipe"),
+              const SizedBox(height: 15),
+
+              //  input box
+              TextField(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Recipe name",
+                ),
+                onChanged: (value) async {
+                  name = value;
+                },
+              ),
+              const SizedBox(height: 15),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  setState(() {
+                    recipes.add(Recipe(name));
+                  });
+                },
+                child: const Text("Add recipe"),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  editTarget(context, e) {
+    var route = MaterialPageRoute(
+      builder: (context) => TargetPage(e, () {
+        setState(() {
+          targets.remove(e);
+        });
+      }),
+    );
+
+    Navigator.push(context, route);
   }
 
   destinationSelected(index) {
@@ -17,7 +274,7 @@ class NavigationState extends State<Navigation> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(context) {
     final theme = Theme.of(context);
     return Scaffold(
       bottomNavigationBar: NavigationBar(
@@ -27,12 +284,19 @@ class NavigationState extends State<Navigation> {
         selectedIndex: currentPageIndex,
         destinations: const <Widget>[
           NavigationDestination(
-            selectedIcon: Icon(Icons.home),
-            icon: Icon(Icons.home_outlined),
+            icon: Icon(Symbols.home),
             label: "Home",
           ),
           NavigationDestination(
-            icon: Badge(child: Icon(Icons.notifications_sharp)),
+            icon: Icon(Symbols.target),
+            label: "Targets",
+          ),
+          NavigationDestination(
+            icon: Icon(Symbols.dinner_dining),
+            label: "Recipes",
+          ),
+          NavigationDestination(
+            icon: Icon(Symbols.notifications),
             label: "Notifications",
           ),
         ],
@@ -40,56 +304,115 @@ class NavigationState extends State<Navigation> {
       body: [
         /// Home page
         Card(
-          shadowColor: Colors.transparent,
-          margin: const EdgeInsets.all(8.0),
+          margin: const EdgeInsets.all(8),
           child: SizedBox.expand(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Home page",
+                  "Healthy eating application",
                   style: theme.textTheme.titleLarge,
                 ),
-                const Text(
-                  "Basic counter application nerd",
-                ),
                 Text(
-                  "Number $counter",
-                  style: Theme.of(context).textTheme.headlineMedium,
+                  "Application homepage\nLog your targets, recipes, etc",
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.titleMedium,
                 ),
               ],
             ),
           ),
         ),
 
+        /// Targets page
+        Scaffold(
+          body: Card(
+            margin: const EdgeInsets.all(8),
+            child: SingleChildScrollView(
+              child: Column(
+                children: targets
+                    .map(
+                      (e) => ListTile(
+                          title: Text(e.title,
+                              style: const TextStyle(fontSize: 20)),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("${(e.progress * 100).floor()}% done"),
+                              const SizedBox(height: 5),
+                              LinearProgressIndicator(
+                                  value: e.progress, minHeight: 10),
+                            ],
+                          ),
+                          onTap: () {
+                            editTarget(context, e);
+                          }),
+                    )
+                    .toList(),
+              ),
+            ),
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: addTarget,
+            tooltip: "Add target",
+            child: const Icon(Symbols.add),
+          ),
+        ),
+
+        /// Recipes page
+        Scaffold(
+          body: Card(
+            margin: const EdgeInsets.all(8),
+            child: SingleChildScrollView(
+              child: Column(
+                children: recipes
+                    .map(
+                      (e) => ListTile(
+                        title:
+                            Text(e.title, style: const TextStyle(fontSize: 20)),
+                        subtitle: const Text("recipe"),
+                        trailing: IconButton(
+                          icon: const Icon(Symbols.delete),
+                          onPressed: () {
+                            setState(
+                              () {
+                                recipes.remove(e);
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: addRecipe,
+            tooltip: "Add recipe",
+            child: const Icon(Symbols.add),
+          ),
+        ),
+
         /// Notifications page
-        const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Column(
-            children: <Widget>[
-              Card(
-                child: ListTile(
-                  leading: Icon(Icons.notifications_sharp),
-                  title: Text("Notification 1"),
-                  subtitle: Text("Bitcoin button"),
-                ),
-              ),
-              Card(
-                child: ListTile(
-                  leading: Icon(Icons.notifications_sharp),
-                  title: Text("Notification 2"),
-                  subtitle: Text("Increment from anywhere"),
-                ),
-              ),
-            ],
+        Padding(
+          padding: const EdgeInsets.all(8),
+          child: SingleChildScrollView(
+            child: Column(
+              children: notifications
+                  .map(
+                    (e) => Card(
+                      child: ListTile(
+                        leading: Icon(e.icon),
+                        title: Text(e.title),
+                        subtitle: Text(e.subtitle),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
           ),
         ),
       ][currentPageIndex],
-      floatingActionButton: FloatingActionButton(
-        onPressed: incrementCounter,
-        tooltip: "Increment",
-        child: const Icon(Icons.currency_bitcoin),
-      ),
     );
   }
 }
@@ -106,7 +429,7 @@ class App extends StatelessWidget {
   const App({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(context) {
     return MaterialApp(
       theme: ThemeData(useMaterial3: true, brightness: Brightness.dark),
       home: const Navigation(),
