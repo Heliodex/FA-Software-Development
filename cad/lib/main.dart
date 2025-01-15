@@ -26,10 +26,6 @@ class Recipe {
 }
 
 class TargetPageState extends State<TargetPage> {
-  final Target e;
-  final Function() removeTarget;
-  TargetPageState(this.e, this.removeTarget);
-
   addMilestone() {
     var name = "";
 
@@ -60,7 +56,7 @@ class TargetPageState extends State<TargetPage> {
                 onPressed: () {
                   Navigator.pop(context);
                   setState(() {
-                    e.milestones.add(Milestone(name));
+                    widget.e.milestones.add(Milestone(name));
                   });
                 },
                 child: const Text("Add milestone"),
@@ -78,17 +74,17 @@ class TargetPageState extends State<TargetPage> {
         body: Column(
           children: [
             const SizedBox(height: 15),
-            Text("Edit target: ${e.title}"),
+            Text("Edit target: ${widget.e.title}"),
             const SizedBox(height: 15),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("${(e.progress * 100).floor()}% done"),
+                  Text("${(widget.e.progress * 100).floor()}% done"),
                   const SizedBox(height: 5),
                   LinearProgressIndicator(
-                    value: e.progress,
+                    value: widget.e.progress,
                     minHeight: 10,
                   )
                 ],
@@ -98,7 +94,7 @@ class TargetPageState extends State<TargetPage> {
 
             // milestones
             Column(
-              children: e.milestones
+              children: widget.e.milestones
                   .map<ListTile>(
                     (m) => ListTile(
                       title: Text(m.title),
@@ -124,12 +120,12 @@ class TargetPageState extends State<TargetPage> {
             const SizedBox(height: 15),
             Column(
               children: [
-                if (e.progress < 1)
+                if (widget.e.progress < 1)
                   ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
                       setState(() {
-                        e.progress += 0.1;
+                        widget.updateProgress(0.1);
                       });
                     },
                     child: const Text("Update progress"),
@@ -140,7 +136,7 @@ class TargetPageState extends State<TargetPage> {
                   onPressed: () {
                     Navigator.pop(context);
                     setState(() {
-                      removeTarget();
+                      widget.removeTarget();
                     });
                   },
                   child: const Text("Delete target"),
@@ -155,10 +151,12 @@ class TargetPageState extends State<TargetPage> {
 class TargetPage extends StatefulWidget {
   final Target e;
   final Function() removeTarget;
-  const TargetPage(this.e, this.removeTarget, {super.key});
+  final Function(double) updateProgress;
+  const TargetPage(this.e,
+      {required this.removeTarget, required this.updateProgress, super.key});
 
   @override
-  createState() => TargetPageState(e, removeTarget);
+  createState() => TargetPageState();
 }
 
 class NavigationState extends State<Navigation> {
@@ -257,11 +255,19 @@ class NavigationState extends State<Navigation> {
 
   editTarget(context, e) {
     var route = MaterialPageRoute(
-      builder: (context) => TargetPage(e, () {
-        setState(() {
-          targets.remove(e);
-        });
-      }),
+      builder: (context) => TargetPage(
+        e,
+        removeTarget: () {
+          setState(() {
+            targets.remove(e);
+          });
+        },
+        updateProgress: (n) {
+          setState(() {
+            e.progress += n;
+          });
+        },
+      ),
     );
 
     Navigator.push(context, route);
@@ -332,20 +338,21 @@ class NavigationState extends State<Navigation> {
                 children: targets
                     .map(
                       (e) => ListTile(
-                          title: Text(e.title,
-                              style: const TextStyle(fontSize: 20)),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("${(e.progress * 100).floor()}% done"),
-                              const SizedBox(height: 5),
-                              LinearProgressIndicator(
-                                  value: e.progress, minHeight: 10),
-                            ],
-                          ),
-                          onTap: () {
-                            editTarget(context, e);
-                          }),
+                        title:
+                            Text(e.title, style: const TextStyle(fontSize: 20)),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("${(e.progress * 100).floor()}% done"),
+                            const SizedBox(height: 5),
+                            LinearProgressIndicator(
+                                value: e.progress, minHeight: 10),
+                          ],
+                        ),
+                        onTap: () {
+                          editTarget(context, e);
+                        },
+                      ),
                     )
                     .toList(),
               ),
@@ -373,11 +380,9 @@ class NavigationState extends State<Navigation> {
                         trailing: IconButton(
                           icon: const Icon(Symbols.delete),
                           onPressed: () {
-                            setState(
-                              () {
-                                recipes.remove(e);
-                              },
-                            );
+                            setState(() {
+                              recipes.remove(e);
+                            });
                           },
                         ),
                       ),
