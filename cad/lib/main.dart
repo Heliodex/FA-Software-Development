@@ -1,24 +1,21 @@
 import "package:flutter/material.dart";
 import "package:material_symbols_icons/symbols.dart";
 import "lib.dart";
-import "recipe.dart";
+import "home.dart";
 import "target.dart";
-
-class Notification {
-  IconData icon;
-  String title, subtitle;
-  DateTime time;
-  Notification(this.icon, this.title, this.subtitle, this.time);
-}
+import "targets.dart";
+import "recipe.dart";
+import "recipes.dart";
+import "notifications.dart";
 
 class NavigationState extends State<Navigation> {
   var currentPageIndex = 0;
 
-  List<Notification> notifications = [
-    Notification(Symbols.dinner_dining, "Notifications", "sup",
-        DateTime(2019, 07, 20, 20, 18, 04)),
-    Notification(Symbols.dinner_dining, "Notification 2", "sup",
-        DateTime(2019, 07, 20, 20, 18, 04)),
+  List<AppNotification> notifications = [
+    AppNotification(Symbols.dinner_dining, "Notifications", "sup",
+        DateTime(2025, 01, 15, 20, 18, 04)),
+    AppNotification(Symbols.dinner_dining, "Notification 2",
+        "test notification", DateTime(2024, 07, 20, 20, 18, 04)),
   ];
   List<Target> targets = [];
   List<Recipe> recipes = [];
@@ -107,7 +104,15 @@ class NavigationState extends State<Navigation> {
     );
   }
 
-  editTarget(context, e) {
+  deleteRecipe(Recipe e) {
+    confirmation(context, "delete this recipe", () {
+      setState(() {
+        recipes.remove(e);
+      });
+    });
+  }
+
+  editTarget(BuildContext context, Target e) {
     var route = MaterialPageRoute(
       builder: (context) => TargetPage(
         e,
@@ -132,7 +137,7 @@ class NavigationState extends State<Navigation> {
     Navigator.push(context, route);
   }
 
-  editRecipe(context, e) {
+  editRecipe(BuildContext context, Recipe e) {
     var route = MaterialPageRoute(
       builder: (context) => RecipePage(
         e,
@@ -161,6 +166,17 @@ class NavigationState extends State<Navigation> {
   @override
   Widget build(context) {
     final theme = Theme.of(context);
+    final pages = [
+      // Home page
+      Home(theme),
+      // Targets page
+      Targets(theme, targets, editTarget, addTarget),
+      // Recipes page
+      Recipes(theme, recipes, editRecipe, addRecipe, deleteRecipe),
+      // Notifications page
+      Notifications(theme, notifications),
+    ];
+
     return Scaffold(
       bottomNavigationBar: NavigationBar(
         backgroundColor: Colors.purple[900],
@@ -186,124 +202,7 @@ class NavigationState extends State<Navigation> {
           ),
         ],
       ),
-      body: [
-        /// Home page
-        Card(
-          margin: const EdgeInsets.all(8),
-          child: SizedBox.expand(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Healthy eating application",
-                  style: theme.textTheme.titleLarge,
-                ),
-                Text(
-                  "Application homepage\nLog your targets, recipes, etc",
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.titleMedium,
-                ),
-              ],
-            ),
-          ),
-        ),
-
-        /// Targets page
-        Scaffold(
-          body: Card(
-            margin: const EdgeInsets.all(8),
-            child: SingleChildScrollView(
-              child: Column(
-                children: targets
-                    .map(
-                      (e) => ListTile(
-                        title:
-                            Text(e.title, style: const TextStyle(fontSize: 20)),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("${(e.progress * 100).floor()}% done"),
-                            const SizedBox(height: 5),
-                            LinearProgressIndicator(
-                                value: e.progress, minHeight: 10),
-                          ],
-                        ),
-                        onTap: () {
-                          editTarget(context, e);
-                        },
-                      ),
-                    )
-                    .toList(),
-              ),
-            ),
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: addTarget,
-            tooltip: "Add target",
-            child: const Icon(Symbols.add),
-          ),
-        ),
-
-        /// Recipes page
-        Scaffold(
-          body: Card(
-            margin: const EdgeInsets.all(8),
-            child: SingleChildScrollView(
-              child: Column(
-                children: recipes
-                    .map(
-                      (e) => ListTile(
-                        title:
-                            Text(e.title, style: const TextStyle(fontSize: 20)),
-                        subtitle: const Text("recipe"),
-                        trailing: IconButton(
-                          icon: const Icon(Symbols.delete),
-                          onPressed: () {
-                            confirmation(context, "delete this recipe", () {
-                              setState(() {
-                                recipes.remove(e);
-                              });
-                            });
-                          },
-                        ),
-                        onTap: () {
-                          editRecipe(context, e);
-                        },
-                      ),
-                    )
-                    .toList(),
-              ),
-            ),
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: addRecipe,
-            tooltip: "Add recipe",
-            child: const Icon(Symbols.add),
-          ),
-        ),
-
-        /// Notifications page
-        Padding(
-          padding: const EdgeInsets.all(8),
-          child: SingleChildScrollView(
-            child: Column(
-              children: notifications
-                  .map(
-                    (e) => Card(
-                      child: ListTile(
-                        leading: Icon(e.icon),
-                        title: Text(e.title),
-                        subtitle: Text(e.subtitle),
-                        // show time as relative
-                        trailing: Text(relativeTime(e.time)),
-                      ),
-                    ),
-                  )
-                  .toList(),
-            ),
-          ),
-        ),
-      ][currentPageIndex],
+      body: pages[currentPageIndex],
     );
   }
 }
@@ -320,12 +219,10 @@ class App extends StatelessWidget {
   const App({super.key});
 
   @override
-  Widget build(context) {
-    return MaterialApp(
-      theme: ThemeData(useMaterial3: true, brightness: Brightness.dark),
-      home: const Navigation(),
-    );
-  }
+  Widget build(context) => MaterialApp(
+        theme: ThemeData(useMaterial3: true, brightness: Brightness.dark),
+        home: const Navigation(),
+      );
 }
 
 void main() => runApp(const App());

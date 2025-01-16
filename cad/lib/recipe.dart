@@ -129,9 +129,7 @@ class RecipePageState extends State<RecipePage> {
 
                 // add milestone button
                 ElevatedButton(
-                  onPressed: () {
-                    addIngredient();
-                  },
+                  onPressed: addIngredient,
                   child: const Text("Add ingredient"),
                 ),
 

@@ -115,9 +115,7 @@ class TargetPageState extends State<TargetPage> {
 
             // add milestone button
             ElevatedButton(
-              onPressed: () {
-                addMilestone();
-              },
+              onPressed: addMilestone,
               child: const Text("Add milestone"),
             ),
 
