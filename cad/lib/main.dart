@@ -1,170 +1,24 @@
 import "package:flutter/material.dart";
 import "package:material_symbols_icons/symbols.dart";
+import "lib.dart";
+import "recipe.dart";
+import "target.dart";
 
 class Notification {
   IconData icon;
   String title, subtitle;
-  Notification(this.icon, this.title, this.subtitle);
-}
-
-class Milestone {
-  String title;
-  bool completed = false;
-  Milestone(this.title);
-}
-
-class Target {
-  String title;
-  double progress = 0;
-  List<Milestone> milestones = [];
-  Target(this.title);
-}
-
-class Recipe {
-  String title;
-  Recipe(this.title);
-}
-
-class TargetPageState extends State<TargetPage> {
-  addMilestone() {
-    var name = "";
-
-    showDialog(
-      context: context,
-      builder: (context) => Dialog(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text("Create a milestone"),
-              const SizedBox(height: 15),
-
-              //  input box
-              TextField(
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: "Milestone name",
-                ),
-                onChanged: (value) async {
-                  name = value;
-                },
-              ),
-              const SizedBox(height: 15),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  setState(() {
-                    widget.e.milestones.add(Milestone(name));
-                  });
-                },
-                child: const Text("Add milestone"),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  @override
-  Widget build(context) => Scaffold(
-        appBar: AppBar(title: const Text("Edit target")),
-        body: Column(
-          children: [
-            const SizedBox(height: 15),
-            Text("Edit target: ${widget.e.title}"),
-            const SizedBox(height: 15),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("${(widget.e.progress * 100).floor()}% done"),
-                  const SizedBox(height: 5),
-                  LinearProgressIndicator(
-                    value: widget.e.progress,
-                    minHeight: 10,
-                  )
-                ],
-              ),
-            ),
-            const SizedBox(height: 15),
-
-            // milestones
-            Column(
-              children: widget.e.milestones
-                  .map<ListTile>(
-                    (m) => ListTile(
-                      title: Text(m.title),
-                      subtitle: const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Incomplete"),
-                        ],
-                      ),
-                    ),
-                  )
-                  .toList(),
-            ),
-
-            // add milestone button
-            ElevatedButton(
-              onPressed: () {
-                addMilestone();
-              },
-              child: const Text("Add milestone"),
-            ),
-
-            const SizedBox(height: 15),
-            Column(
-              children: [
-                if (widget.e.progress < 1)
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      setState(() {
-                        widget.updateProgress(0.1);
-                      });
-                    },
-                    child: const Text("Update progress"),
-                  ),
-
-                //   delete button
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    setState(() {
-                      widget.removeTarget();
-                    });
-                  },
-                  child: const Text("Delete target"),
-                ),
-              ],
-            ),
-          ],
-        ),
-      );
-}
-
-class TargetPage extends StatefulWidget {
-  final Target e;
-  final Function() removeTarget;
-  final Function(double) updateProgress;
-  const TargetPage(this.e,
-      {required this.removeTarget, required this.updateProgress, super.key});
-
-  @override
-  createState() => TargetPageState();
+  DateTime time;
+  Notification(this.icon, this.title, this.subtitle, this.time);
 }
 
 class NavigationState extends State<Navigation> {
   var currentPageIndex = 0;
 
   List<Notification> notifications = [
-    Notification(Symbols.dinner_dining, "Notifications", "sup"),
-    Notification(Symbols.dinner_dining, "Notification 2", "sup"),
+    Notification(Symbols.dinner_dining, "Notifications", "sup",
+        DateTime(2019, 07, 20, 20, 18, 04)),
+    Notification(Symbols.dinner_dining, "Notification 2", "sup",
+        DateTime(2019, 07, 20, 20, 18, 04)),
   ];
   List<Target> targets = [];
   List<Recipe> recipes = [];
@@ -190,8 +44,8 @@ class NavigationState extends State<Navigation> {
                   border: OutlineInputBorder(),
                   labelText: "Target name",
                 ),
-                onChanged: (value) async {
-                  name = value;
+                onChanged: (v) {
+                  name = v;
                 },
               ),
               const SizedBox(height: 15),
@@ -232,8 +86,8 @@ class NavigationState extends State<Navigation> {
                   border: OutlineInputBorder(),
                   labelText: "Recipe name",
                 ),
-                onChanged: (value) async {
-                  name = value;
+                onChanged: (v) {
+                  name = v;
                 },
               ),
               const SizedBox(height: 15),
@@ -262,9 +116,34 @@ class NavigationState extends State<Navigation> {
             targets.remove(e);
           });
         },
+        renameTarget: (name) {
+          setState(() {
+            e.title = name;
+          });
+        },
         updateProgress: (n) {
           setState(() {
             e.progress += n;
+          });
+        },
+      ),
+    );
+
+    Navigator.push(context, route);
+  }
+
+  editRecipe(context, e) {
+    var route = MaterialPageRoute(
+      builder: (context) => RecipePage(
+        e,
+        removeRecipe: () {
+          setState(() {
+            recipes.remove(e);
+          });
+        },
+        renameRecipe: (name) {
+          setState(() {
+            e.title = name;
           });
         },
       ),
@@ -380,11 +259,16 @@ class NavigationState extends State<Navigation> {
                         trailing: IconButton(
                           icon: const Icon(Symbols.delete),
                           onPressed: () {
-                            setState(() {
-                              recipes.remove(e);
+                            confirmation(context, "delete this recipe", () {
+                              setState(() {
+                                recipes.remove(e);
+                              });
                             });
                           },
                         ),
+                        onTap: () {
+                          editRecipe(context, e);
+                        },
                       ),
                     )
                     .toList(),
@@ -410,6 +294,8 @@ class NavigationState extends State<Navigation> {
                         leading: Icon(e.icon),
                         title: Text(e.title),
                         subtitle: Text(e.subtitle),
+                        // show time as relative
+                        trailing: Text(relativeTime(e.time)),
                       ),
                     ),
                   )
