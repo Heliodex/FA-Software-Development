@@ -19,24 +19,37 @@ class Recipes extends StatelessWidget {
           margin: const EdgeInsets.all(8),
           child: SingleChildScrollView(
             child: Column(
-              children: recipes
-                  .map(
-                    (e) => ListTile(
-                      title:
-                          Text(e.title, style: const TextStyle(fontSize: 20)),
-                      subtitle: const Text("recipe"),
-                      trailing: IconButton(
-                        icon: const Icon(Symbols.delete),
-                        onPressed: () {
-                          deleteRecipe(e);
-                        },
+              children: recipes.isEmpty
+                  ? [
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Text(
+                            "No recipes found. Add a new recipe to get started!",
+                            style: theme.textTheme.titleMedium,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
                       ),
-                      onTap: () {
-                        editRecipe(context, e);
-                      },
-                    ),
-                  )
-                  .toList(),
+                    ]
+                  : recipes
+                      .map(
+                        (e) => ListTile(
+                          title: Text(e.title,
+                              style: const TextStyle(fontSize: 20)),
+                          subtitle: const Text("recipe"),
+                          trailing: IconButton(
+                            icon: const Icon(Symbols.delete),
+                            onPressed: () {
+                              deleteRecipe(e);
+                            },
+                          ),
+                          onTap: () {
+                            editRecipe(context, e);
+                          },
+                        ),
+                      )
+                      .toList(),
             ),
           ),
         ),

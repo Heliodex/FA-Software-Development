@@ -3,7 +3,8 @@ import "package:flutter/material.dart";
 // Home page
 class Home extends StatelessWidget {
   final ThemeData theme;
-  const Home(this.theme, {super.key});
+  final int targetCount, recipeCount;
+  const Home(this.theme, this.targetCount, this.recipeCount, {super.key});
 
   @override
   Widget build(BuildContext context) => Card(
@@ -20,6 +21,37 @@ class Home extends StatelessWidget {
                 "Application homepage\nLog your targets, recipes, etc",
                 textAlign: TextAlign.center,
                 style: theme.textTheme.titleMedium,
+              ),
+
+              const SizedBox(height: 50),
+
+              // stats
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        "Targets",
+                        style: theme.textTheme.titleMedium,
+                      ),
+                      Text(
+                        targetCount.toString(),
+                        style: theme.textTheme.titleLarge,
+                      ),
+                    ],
+                  ),
+                  Column(children: [
+                    Text(
+                      "Recipes",
+                      style: theme.textTheme.titleMedium,
+                    ),
+                    Text(
+                      recipeCount.toString(),
+                      style: theme.textTheme.titleLarge,
+                    ),
+                  ]),
+                ],
               ),
             ],
           ),

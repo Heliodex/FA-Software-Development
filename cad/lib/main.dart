@@ -46,7 +46,7 @@ class NavigationState extends State<Navigation> {
                 },
               ),
               const SizedBox(height: 15),
-              ElevatedButton(
+              TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                   setState(() {
@@ -88,7 +88,7 @@ class NavigationState extends State<Navigation> {
                 },
               ),
               const SizedBox(height: 15),
-              ElevatedButton(
+              TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                   setState(() {
@@ -124,11 +124,6 @@ class NavigationState extends State<Navigation> {
         renameTarget: (name) {
           setState(() {
             e.title = name;
-          });
-        },
-        updateProgress: (n) {
-          setState(() {
-            e.progress += n;
           });
         },
       ),
@@ -168,7 +163,7 @@ class NavigationState extends State<Navigation> {
     final theme = Theme.of(context);
     final pages = [
       // Home page
-      Home(theme),
+      Home(theme, targets.length, recipes.length),
       // Targets page
       Targets(theme, targets, editTarget, addTarget),
       // Recipes page

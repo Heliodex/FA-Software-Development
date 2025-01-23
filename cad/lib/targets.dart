@@ -17,26 +17,39 @@ class Targets extends StatelessWidget {
           margin: const EdgeInsets.all(8),
           child: SingleChildScrollView(
             child: Column(
-              children: targets
-                  .map(
-                    (e) => ListTile(
-                      title:
-                          Text(e.title, style: const TextStyle(fontSize: 20)),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("${(e.progress * 100).floor()}% done"),
-                          const SizedBox(height: 5),
-                          LinearProgressIndicator(
-                              value: e.progress, minHeight: 10),
-                        ],
+              children: targets.isEmpty
+                  ? [
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Text(
+                            "No targets found. Add a new target to get started!",
+                            style: theme.textTheme.titleMedium,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
                       ),
-                      onTap: () {
-                        editTarget(context, e);
-                      },
-                    ),
-                  )
-                  .toList(),
+                    ]
+                  : targets
+                      .map(
+                        (e) => ListTile(
+                          title: Text(e.title,
+                              style: const TextStyle(fontSize: 20)),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("${(e.progress * 100).floor()}% done"),
+                              const SizedBox(height: 5),
+                              LinearProgressIndicator(
+                                  value: e.progress, minHeight: 10),
+                            ],
+                          ),
+                          onTap: () {
+                            editTarget(context, e);
+                          },
+                        ),
+                      )
+                      .toList(),
             ),
           ),
         ),

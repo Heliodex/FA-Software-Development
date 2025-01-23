@@ -10,9 +10,14 @@ class Milestone {
 
 class Target {
   String title;
-  double progress = 0;
   List<Milestone> milestones = [];
   Target(this.title);
+
+  double get progress {
+    if (milestones.isEmpty) return 0;
+    var completed = milestones.where((m) => m.completed).length;
+    return completed / milestones.length;
+  }
 }
 
 class TargetPageState extends State<TargetPage> {
@@ -31,7 +36,7 @@ class TargetPageState extends State<TargetPage> {
               const Text("Create a milestone"),
               const SizedBox(height: 15),
 
-              //  input box
+              // input box
               TextField(
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -42,7 +47,8 @@ class TargetPageState extends State<TargetPage> {
                 },
               ),
               const SizedBox(height: 15),
-              ElevatedButton(
+
+              TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                   setState(() {
@@ -77,78 +83,74 @@ class TargetPageState extends State<TargetPage> {
             ),
           ],
         ),
-        body: Column(
-          children: [
-            const SizedBox(height: 15),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("${(widget.e.progress * 100).floor()}% done"),
-                  const SizedBox(height: 5),
-                  LinearProgressIndicator(
-                    value: widget.e.progress,
-                    minHeight: 10,
-                  )
-                ],
-              ),
-            ),
-            const SizedBox(height: 15),
-
-            // milestones
-            Column(
-              children: widget.e.milestones
-                  .map<ListTile>(
-                    (m) => ListTile(
-                      title: Text(m.title),
-                      subtitle: const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Incomplete"),
-                        ],
-                      ),
-                    ),
-                  )
-                  .toList(),
-            ),
-
-            // add milestone button
-            ElevatedButton(
-              onPressed: addMilestone,
-              child: const Text("Add milestone"),
-            ),
-
-            const SizedBox(height: 15),
-            Column(
+        body: Column(children: [
+          const SizedBox(height: 15),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (widget.e.progress < 1)
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      setState(() {
-                        widget.updateProgress(0.1);
-                      });
-                    },
-                    child: const Text("Update progress"),
-                  ),
-
-                //   delete button
-                ElevatedButton(
-                  onPressed: () {
-                    confirmation(context, "delete this target", () {
-                      Navigator.pop(context);
-                      setState(() {
-                        widget.removeTarget();
-                      });
-                    });
-                  },
-                  child: const Text("Delete target"),
-                ),
+                Text("${(widget.e.progress * 100).floor()}% done"),
+                const SizedBox(height: 5),
+                LinearProgressIndicator(
+                  value: widget.e.progress,
+                  minHeight: 10,
+                )
               ],
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 15),
+
+          // milestones
+          Column(
+            children: widget.e.milestones
+                .map<ListTile>(
+                  (m) => ListTile(
+                    title: Text(m.title),
+                    subtitle: const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Incomplete"),
+                      ],
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+
+          // add milestone button
+          ElevatedButton(
+            onPressed: addMilestone,
+            child: const Text("Add milestone"),
+          ),
+
+          const SizedBox(height: 15),
+          Column(children: [
+            // if (widget.e.progress < 1)
+            //   ElevatedButton(
+            //     onPressed: () {
+            //       Navigator.pop(context);
+            //       setState(() {
+            //         widget.updateProgress(0.1);
+            //       });
+            //     },
+            //     child: const Text("Update progress"),
+            //   ),
+
+            //   delete button
+            ElevatedButton(
+              onPressed: () {
+                confirmation(context, "delete this target", () {
+                  Navigator.pop(context);
+                  setState(() {
+                    widget.removeTarget();
+                  });
+                });
+              },
+              child: const Text("Delete target"),
+            ),
+          ]),
+        ]),
       );
 }
 
@@ -156,13 +158,9 @@ class TargetPage extends StatefulWidget {
   final Target e;
   final Function() removeTarget;
   final Function(String) renameTarget;
-  final Function(double) updateProgress;
 
   const TargetPage(this.e,
-      {required this.removeTarget,
-      required this.renameTarget,
-      required this.updateProgress,
-      super.key});
+      {required this.removeTarget, required this.renameTarget, super.key});
 
   @override
   createState() => TargetPageState();

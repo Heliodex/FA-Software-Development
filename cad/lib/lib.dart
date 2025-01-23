@@ -68,7 +68,7 @@ rename(context, thing, onPressed) {
               },
             ),
             const SizedBox(height: 15),
-            ElevatedButton(
+            TextButton(
               onPressed: () {
                 Navigator.pop(context);
                 onPressed(name);

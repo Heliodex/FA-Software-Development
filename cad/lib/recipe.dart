@@ -9,9 +9,15 @@ class Ingredient {
   Ingredient(this.name, this.quantity, this.unit);
 }
 
+class Step {
+  String description;
+  Step(this.description);
+}
+
 class Recipe {
   String title;
   List<Ingredient> ingredients = [];
+  List<Step> steps = [];
   Recipe(this.title);
 }
 
@@ -70,7 +76,7 @@ class RecipePageState extends State<RecipePage> {
               ),
 
               const SizedBox(height: 15),
-              ElevatedButton(
+              TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                   setState(() {
@@ -79,6 +85,82 @@ class RecipePageState extends State<RecipePage> {
                 },
                 child: const Text("Add ingredient"),
               ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  addStep(Step? step) {
+    var description = "";
+    if (step != null) {
+      description = step.description;
+    }
+
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(step != null
+                  ? "Edit step ${widget.e.steps.indexOf(step) + 1}"
+                  : "Add a step"),
+              const SizedBox(height: 15),
+              TextField(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Description",
+                  alignLabelWithHint: true,
+                ),
+                // add text to the description
+                controller: TextEditingController(text: description),
+                onChanged: (v) {
+                  description = v;
+                },
+                maxLines:
+                    5, // Increase the number of lines to hold a longer description
+              ),
+              const SizedBox(height: 15),
+              if (step != null) ...[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        setState(() {
+                          step.description = description;
+                        });
+                      },
+                      child: const Text("Edit step"),
+                    ),
+                    const SizedBox(width: 15),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        setState(() {
+                          widget.e.steps.remove(step);
+                        });
+                      },
+                      child: const Text("Delete step"),
+                    ),
+                  ],
+                ),
+              ] else
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    setState(() {
+                      widget.e.steps.add(Step(description));
+                    });
+                  },
+                  child: const Text("Add step"),
+                ),
             ],
           ),
         ),
@@ -105,51 +187,80 @@ class RecipePageState extends State<RecipePage> {
             ),
           ],
         ),
-        body: Column(
-          children: [
-            const SizedBox(height: 15),
+        body: Column(children: [
+          const SizedBox(height: 15),
+          Column(children: [
+            // ingredients
             Column(
-              children: [
-                // ingredients
-                Column(
-                  children: widget.e.ingredients
-                      .map<ListTile>(
-                        (m) => ListTile(
-                          title: Text(m.name),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("${m.quantity} ${m.unit}"),
-                            ],
-                          ),
-                        ),
-                      )
-                      .toList(),
-                ),
-
-                // add milestone button
-                ElevatedButton(
-                  onPressed: addIngredient,
-                  child: const Text("Add ingredient"),
-                ),
-
-                const SizedBox(height: 15),
-                // delete button
-                ElevatedButton(
-                  onPressed: () {
-                    confirmation(context, "delete this recipe", () {
-                      Navigator.pop(context);
-                      setState(() {
-                        widget.removeRecipe();
-                      });
-                    });
-                  },
-                  child: const Text("Delete recipe"),
-                ),
-              ],
+              children: widget.e.ingredients
+                  .map<ListTile>(
+                    (m) => ListTile(
+                      title: Text(m.name),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("${m.quantity} ${m.unit}"),
+                        ],
+                      ),
+                    ),
+                  )
+                  .toList(),
             ),
-          ],
-        ),
+            // add ingredient button
+            ElevatedButton(
+              onPressed: addIngredient,
+              child: const Text("Add ingredient"),
+            ),
+
+            const SizedBox(height: 15),
+            Column(children: [
+              // steps
+              Column(
+                children: widget.e.steps
+                    .map<ListTile>(
+                      (m) => ListTile(
+                        title: Text("Step ${widget.e.steps.indexOf(m) + 1}"),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(m.description),
+                          ],
+                        ),
+                        trailing: IconButton(
+                          icon: const Icon(Symbols.edit),
+                          onPressed: () {
+                            addStep(m);
+                          },
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ]),
+            // add step button
+            ElevatedButton(
+              onPressed: () {
+                addStep(null);
+              },
+              child: const Text("Add step"),
+            ),
+
+            const SizedBox(height: 15),
+            // delete button
+            ElevatedButton(
+              onPressed: () {
+                confirmation(context, "delete this recipe", () {
+                  Navigator.pop(context);
+                  setState(() {
+                    widget.removeRecipe();
+                  });
+                });
+              },
+              child: const Text("Delete recipe"),
+            ),
+            const SizedBox(height: 15),
+          ]),
+        ]),
       );
 }
 
