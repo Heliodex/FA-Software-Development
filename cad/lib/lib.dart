@@ -18,30 +18,50 @@ relativeTime(t) {
   return "${diff.inSeconds} seconds ago";
 }
 
-confirmation(context, m, ifConfirm) {
-  showDialog(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: Text("Are you sure you want to $m?"),
-      content: const Text("This action cannot be undone"),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: const Text("Cancel"),
+dialog(BuildContext context, String title, List<Widget> inputs,
+        List<Widget> buttons) =>
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(title),
+              const SizedBox(height: 15),
+              ...inputs,
+              const SizedBox(height: 15),
+              ...buttons,
+            ],
+          ),
         ),
-        TextButton(
-          onPressed: () {
-            Navigator.pop(context);
-            ifConfirm();
-          },
-          child: const Text("Confirm"),
-        ),
-      ],
-    ),
-  );
-}
+      ),
+    );
+
+confirmation(BuildContext context, m, ifConfirm) => showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Are you sure you want to $m?"),
+        content: const Text("This action cannot be undone"),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text("Cancel"),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              ifConfirm();
+            },
+            child: const Text("Confirm"),
+          ),
+        ],
+      ),
+    );
 
 rename(context, thing, onPressed) {
   var name = "";

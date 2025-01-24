@@ -23,85 +23,58 @@ class NavigationState extends State<Navigation> {
   addTarget() {
     var name = "";
 
-    showDialog(
-      context: context,
-      builder: (context) => Dialog(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text("Create a target"),
-              const SizedBox(height: 15),
-
-              //  input box
-              TextField(
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: "Target name",
-                ),
-                onChanged: (v) {
-                  name = v;
-                },
-              ),
-              const SizedBox(height: 15),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  setState(() {
-                    targets.add(Target(name));
-                  });
-                },
-                child: const Text("Add target"),
-              ),
-            ],
+    dialog(
+      context,
+      "Create a target",
+      [
+        TextField(
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: "Target name",
           ),
+          onChanged: (v) {
+            name = v;
+          },
         ),
-      ),
+      ],
+      [
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+            setState(() {
+              targets.add(Target(name));
+            });
+          },
+          child: const Text("Add target"),
+        ),
+      ],
     );
   }
 
   addRecipe() {
     var name = "";
 
-    showDialog(
-      context: context,
-      builder: (context) => Dialog(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text("Create a recipe"),
-              const SizedBox(height: 15),
-
-              //  input box
-              TextField(
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: "Recipe name",
-                ),
-                onChanged: (v) {
-                  name = v;
-                },
-              ),
-              const SizedBox(height: 15),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  setState(() {
-                    recipes.add(Recipe(name));
-                  });
-                },
-                child: const Text("Add recipe"),
-              ),
-            ],
-          ),
+    dialog(context, "Create a recipe", [
+      TextField(
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          labelText: "Recipe name",
         ),
+        onChanged: (v) {
+          name = v;
+        },
       ),
-    );
+    ], [
+      TextButton(
+        onPressed: () {
+          Navigator.pop(context);
+          setState(() {
+            recipes.add(Recipe(name));
+          });
+        },
+        child: const Text("Add recipe"),
+      ),
+    ]);
   }
 
   deleteRecipe(Recipe e) {

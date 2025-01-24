@@ -24,43 +24,31 @@ class TargetPageState extends State<TargetPage> {
   addMilestone() {
     var name = "";
 
-    showDialog(
-      context: context,
-      builder: (context) => Dialog(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text("Create a milestone"),
-              const SizedBox(height: 15),
-
-              // input box
-              TextField(
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: "Milestone name",
-                ),
-                onChanged: (v) {
-                  name = v;
-                },
-              ),
-              const SizedBox(height: 15),
-
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  setState(() {
-                    widget.e.milestones.add(Milestone(name));
-                  });
-                },
-                child: const Text("Add milestone"),
-              ),
-            ],
+    dialog(
+      context,
+      "Create a milestone",
+      [
+        TextField(
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: "Milestone name",
           ),
+          onChanged: (v) {
+            name = v;
+          },
         ),
-      ),
+      ],
+      [
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+            setState(() {
+              widget.e.milestones.add(Milestone(name));
+            });
+          },
+          child: const Text("Add milestone"),
+        ),
+      ],
     );
   }
 
