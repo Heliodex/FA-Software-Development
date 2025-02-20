@@ -21,7 +21,7 @@ class Targets extends StatelessWidget {
                   ? [
                       Center(
                         child: Padding(
-                          padding: const EdgeInsets.all(16.0),
+                          padding: const EdgeInsets.all(16),
                           child: Text(
                             "No targets found. Add a new target to get started!",
                             style: theme.textTheme.titleMedium,

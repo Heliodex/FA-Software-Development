@@ -7,8 +7,17 @@ import "targets.dart";
 import "recipe.dart";
 import "recipes.dart";
 import "notifications.dart";
+import "data.dart";
 
 class NavigationState extends State<Navigation> {
+  List<Target> targets = [];
+  List<Recipe> recipes = [];
+
+  load() async {
+    targets = await loadTargets();
+    recipes = await loadRecipes();
+  }
+
   var currentPageIndex = 0;
 
   List<AppNotification> notifications = [
@@ -17,8 +26,6 @@ class NavigationState extends State<Navigation> {
     AppNotification(Symbols.dinner_dining, "Notification 2",
         "test notification", DateTime(2024, 07, 20, 20, 18, 04)),
   ];
-  List<Target> targets = [];
-  List<Recipe> recipes = [];
 
   addTarget() {
     var name = "";
@@ -43,6 +50,7 @@ class NavigationState extends State<Navigation> {
             Navigator.pop(context);
             setState(() {
               targets.add(Target(name));
+              saveTargets(targets);
             });
           },
           child: const Text("Add target"),
@@ -68,8 +76,9 @@ class NavigationState extends State<Navigation> {
       TextButton(
         onPressed: () {
           Navigator.pop(context);
-          setState(() {
+          setState(() async {
             recipes.add(Recipe(name));
+            saveRecipes(recipes);
           });
         },
         child: const Text("Add recipe"),
@@ -81,6 +90,7 @@ class NavigationState extends State<Navigation> {
     confirmation(context, "delete this recipe", () {
       setState(() {
         recipes.remove(e);
+        saveRecipes(recipes);
       });
     });
   }
@@ -92,11 +102,13 @@ class NavigationState extends State<Navigation> {
         removeTarget: () {
           setState(() {
             targets.remove(e);
+            saveTargets(targets);
           });
         },
         renameTarget: (name) {
           setState(() {
             e.title = name;
+            updateTarget(e);
           });
         },
       ),
@@ -112,11 +124,13 @@ class NavigationState extends State<Navigation> {
         removeRecipe: () {
           setState(() {
             recipes.remove(e);
+            saveRecipes(recipes);
           });
         },
         renameRecipe: (name) {
           setState(() {
             e.title = name;
+            updateRecipe(e);
           });
         },
       ),
@@ -128,6 +142,14 @@ class NavigationState extends State<Navigation> {
   destinationSelected(index) {
     setState(() {
       currentPageIndex = index;
+    });
+  }
+
+  @override
+  initState() {
+    super.initState();
+    load().then((_) {
+      setState(() {});
     });
   }
 

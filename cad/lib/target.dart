@@ -1,21 +1,35 @@
+import "package:cad/data.dart";
 import "package:flutter/material.dart";
 import "package:material_symbols_icons/symbols.dart";
 import "lib.dart";
 
 class Milestone {
   String title;
-  bool completed = false;
   Milestone(this.title);
 }
 
 class Target {
-  String title;
+  var title = "";
   List<Milestone> milestones = [];
+  var completed = 0;
   Target(this.title);
+
+  Target.fromJson(Map<String, dynamic> decoded) {
+    title = decoded["title"];
+    completed = decoded["completed"];
+    for (var m in decoded["milestones"]) {
+      milestones.add(Milestone(m));
+    }
+  }
+
+  toJson() => {
+        "title": title,
+        "completed": completed,
+        "milestones": milestones.map((m) => m.title).toList(),
+      };
 
   double get progress {
     if (milestones.isEmpty) return 0;
-    var completed = milestones.where((m) => m.completed).length;
     return completed / milestones.length;
   }
 }
@@ -44,6 +58,7 @@ class TargetPageState extends State<TargetPage> {
             Navigator.pop(context);
             setState(() {
               widget.e.milestones.add(Milestone(name));
+              updateTarget(widget.e);
             });
           },
           child: const Text("Add milestone"),
@@ -64,6 +79,7 @@ class TargetPageState extends State<TargetPage> {
                 rename(context, "target", (name) {
                   setState(() {
                     widget.e.title = name;
+                    updateTarget(widget.e);
                   });
                   widget.renameTarget(name);
                 });
@@ -95,15 +111,59 @@ class TargetPageState extends State<TargetPage> {
                 .map<ListTile>(
                   (m) => ListTile(
                     title: Text(m.title),
-                    subtitle: const Column(
+                    subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Incomplete"),
+                        Text(widget.e.milestones.indexOf(m) < widget.e.completed
+                            ? "Complete"
+                            : "Incomplete"),
                       ],
+                    ),
+                    trailing: IconButton(
+                      icon: const Icon(Symbols.delete),
+                      onPressed: () {
+                        setState(() {
+                          widget.e.milestones.remove(m);
+                          if (widget.e.completed >
+                              widget.e.milestones.indexOf(m)) {
+                            widget.e.completed--;
+                          }
+                          updateTarget(widget.e);
+                        });
+                      },
                     ),
                   ),
                 )
                 .toList(),
+          ),
+
+          // side-by-side increase and decrease progress buttons
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  if (widget.e.completed > 0) {
+                    setState(() {
+                      widget.e.completed--;
+                      updateTarget(widget.e);
+                    });
+                  }
+                },
+                child: const Text("Undo milestone"),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  if (widget.e.completed < widget.e.milestones.length) {
+                    setState(() {
+                      widget.e.completed++;
+                      updateTarget(widget.e);
+                    });
+                  }
+                },
+                child: const Text("Complete milestone"),
+              ),
+            ],
           ),
 
           // add milestone button
@@ -125,7 +185,7 @@ class TargetPageState extends State<TargetPage> {
             //     child: const Text("Update progress"),
             //   ),
 
-            //   delete button
+            // delete button
             ElevatedButton(
               onPressed: () {
                 confirmation(context, "delete this target", () {

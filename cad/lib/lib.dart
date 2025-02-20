@@ -24,7 +24,7 @@ dialog(BuildContext context, String title, List<Widget> inputs,
       context: context,
       builder: (context) => Dialog(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -70,7 +70,7 @@ rename(context, thing, onPressed) {
     context: context,
     builder: (context) => Dialog(
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,

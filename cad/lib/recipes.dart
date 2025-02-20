@@ -23,7 +23,7 @@ class Recipes extends StatelessWidget {
                   ? [
                       Center(
                         child: Padding(
-                          padding: const EdgeInsets.all(16.0),
+                          padding: const EdgeInsets.all(16),
                           child: Text(
                             "No recipes found. Add a new recipe to get started!",
                             style: theme.textTheme.titleMedium,

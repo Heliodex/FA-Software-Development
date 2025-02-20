@@ -2,10 +2,24 @@ import "package:flutter/material.dart";
 import "lib.dart";
 
 class AppNotification {
-  IconData icon;
-  String title, subtitle;
-  DateTime time;
+  var icon = Icons.notifications;
+  var title = "", subtitle = "";
+  var time = DateTime.now();
   AppNotification(this.icon, this.title, this.subtitle, this.time);
+
+  AppNotification.fromJson(Map<String, dynamic> decoded) {
+    icon = IconData(decoded["icon"], fontFamily: "MaterialIcons");
+    title = decoded["title"];
+    subtitle = decoded["subtitle"];
+    time = DateTime.parse(decoded["time"]);
+  }
+
+  toJson() => {
+        "icon": icon.codePoint,
+        "title": title,
+        "subtitle": subtitle,
+        "time": time.toIso8601String(),
+      };
 }
 
 // Notifications page

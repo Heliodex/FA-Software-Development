@@ -1,3 +1,4 @@
+import "package:cad/data.dart";
 import "package:flutter/material.dart";
 import "package:material_symbols_icons/symbols.dart";
 import "package:flutter/services.dart";
@@ -15,10 +16,32 @@ class Step {
 }
 
 class Recipe {
-  String title;
+  var title = "";
   List<Ingredient> ingredients = [];
   List<Step> steps = [];
   Recipe(this.title);
+
+  Recipe.fromJson(Map<String, dynamic> decoded) {
+    title = decoded["title"];
+    for (var i in decoded["ingredients"]) {
+      ingredients.add(Ingredient(i["name"], i["quantity"], i["unit"]));
+    }
+    for (var s in decoded["steps"]) {
+      steps.add(Step(s));
+    }
+  }
+
+  toJson() => {
+        "title": title,
+        "ingredients": ingredients
+            .map((i) => {
+                  "name": i.name,
+                  "quantity": i.quantity,
+                  "unit": i.unit,
+                })
+            .toList(),
+        "steps": steps.map((s) => s.description).toList(),
+      };
 }
 
 class RecipePageState extends State<RecipePage> {
@@ -68,6 +91,7 @@ class RecipePageState extends State<RecipePage> {
           Navigator.pop(context);
           setState(() {
             widget.e.ingredients.add(Ingredient(name, quantity, unit));
+            updateRecipe(widget.e);
           });
         },
         child: const Text("Add ingredient"),
@@ -111,6 +135,7 @@ class RecipePageState extends State<RecipePage> {
                   Navigator.pop(context);
                   setState(() {
                     step.description = description;
+                    updateRecipe(widget.e);
                   });
                 },
                 child: const Text("Edit step"),
@@ -121,6 +146,7 @@ class RecipePageState extends State<RecipePage> {
                   Navigator.pop(context);
                   setState(() {
                     widget.e.steps.remove(step);
+                    updateRecipe(widget.e);
                   });
                 },
                 child: const Text("Delete step"),
@@ -133,6 +159,7 @@ class RecipePageState extends State<RecipePage> {
               Navigator.pop(context);
               setState(() {
                 widget.e.steps.add(Step(description));
+                updateRecipe(widget.e);
               });
             },
             child: const Text("Add step"),
