@@ -12,20 +12,15 @@ import "data.dart";
 class NavigationState extends State<Navigation> {
   List<Target> targets = [];
   List<Recipe> recipes = [];
+  List<AppNotification> notifications = [];
 
   load() async {
     targets = await loadTargets();
     recipes = await loadRecipes();
+    notifications = await loadNotifications();
   }
 
   var currentPageIndex = 0;
-
-  List<AppNotification> notifications = [
-    AppNotification(Symbols.dinner_dining, "Notifications", "sup",
-        DateTime(2025, 01, 15, 20, 18, 04)),
-    AppNotification(Symbols.dinner_dining, "Notification 2",
-        "test notification", DateTime(2024, 07, 20, 20, 18, 04)),
-  ];
 
   addTarget() {
     var name = "";
@@ -130,6 +125,11 @@ class NavigationState extends State<Navigation> {
           setState(() {
             e.completed += n;
             updateTarget(e);
+
+            if (n > 0 && e.completed == e.milestones.length) {
+              pushNotification(AppNotification(
+                  Symbols.target, "Target completed", e.title, DateTime.now()));
+            }
           });
         },
       ),
@@ -160,6 +160,20 @@ class NavigationState extends State<Navigation> {
     Navigator.push(context, route);
   }
 
+  pushNotification(AppNotification n) {
+    setState(() {
+      notifications.add(n);
+      saveNotifications(notifications);
+    });
+  }
+
+  deleteNotification(AppNotification n) {
+    setState(() {
+      notifications.remove(n);
+      saveNotifications(notifications);
+    });
+  }
+
   destinationSelected(index) {
     setState(() {
       currentPageIndex = index;
@@ -185,7 +199,7 @@ class NavigationState extends State<Navigation> {
       // Recipes page
       Recipes(theme, recipes, editRecipe, addRecipe, deleteRecipe),
       // Notifications page
-      Notifications(theme, notifications),
+      Notifications(theme, notifications, deleteNotification),
     ];
 
     return Scaffold(

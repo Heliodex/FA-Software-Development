@@ -17,13 +17,16 @@ class Home extends StatelessWidget {
                 "Healthy eating application",
                 style: theme.textTheme.titleLarge,
               ),
-              Text(
-                "Application homepage\nLog your targets, recipes, etc",
-                textAlign: TextAlign.center,
-                style: theme.textTheme.titleMedium,
+
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  "Welcome to Healthy eating application, a personal health target and recipe tracker.\n\nHead to the Targets page to create a target – edit one to add milestones to it, and mark them as complete when you achieve them.\n\nHead to the Recipes page to add a recipe – edit one to add ingredients and steps to it.\n\nGet started by adding a target or recipe!",
+                  style: theme.textTheme.bodyLarge,
+                ),
               ),
 
-              const SizedBox(height: 50),
+              const SizedBox(height: 30),
 
               // stats
               Row(

@@ -1,7 +1,8 @@
 import 'dart:convert';
-import 'package:cad/recipe.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'target.dart';
+import 'recipe.dart';
+import 'notifications.dart';
 
 saveTargets(List<Target> targets) async {
   final prefs = await SharedPreferences.getInstance();
@@ -59,18 +60,18 @@ updateRecipe(Recipe recipe) async {
   prefs.setString("recipes", jsonEncode(recipes));
 }
 
-// saveNotifications(List<AppNotification> notifications) async {
-//   final prefs = await SharedPreferences.getInstance();
-//   prefs.setString("notifications", jsonEncode(notifications));
-// }
+saveNotifications(List<AppNotification> notifications) async {
+  final prefs = await SharedPreferences.getInstance();
+  prefs.setString("notifications", jsonEncode(notifications));
+}
 
-// Future<List<AppNotification>> loadNotifications() async {
-//   final prefs = await SharedPreferences.getInstance();
-//   const key = "notifications";
-//   final value = prefs.getString(key);
-//   if (value == null) {
-//     return [];
-//   }
-//   final List<dynamic> decoded = jsonDecode(value);
-//   return decoded.map((e) => AppNotification.fromJson(e)).toList();
-// }
+Future<List<AppNotification>> loadNotifications() async {
+  final prefs = await SharedPreferences.getInstance();
+  const key = "notifications";
+  final value = prefs.getString(key);
+  if (value == null) {
+    return [];
+  }
+  final List<dynamic> decoded = jsonDecode(value);
+  return decoded.map((e) => AppNotification.fromJson(e)).toList();
+}
