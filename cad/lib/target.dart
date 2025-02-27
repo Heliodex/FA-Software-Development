@@ -57,8 +57,7 @@ class TargetPageState extends State<TargetPage> {
           onPressed: () {
             Navigator.pop(context);
             setState(() {
-              widget.e.milestones.add(Milestone(name));
-              updateTarget(widget.e);
+              widget.addMilestone(Milestone(name));
             });
           },
           child: const Text("Add milestone"),
@@ -76,12 +75,10 @@ class TargetPageState extends State<TargetPage> {
             IconButton(
               icon: const Icon(Symbols.edit),
               onPressed: () {
-                rename(context, "target", (name) {
+                rename(context, widget.e.title, "target", (name) {
                   setState(() {
-                    widget.e.title = name;
-                    updateTarget(widget.e);
+                    widget.renameTarget(name);
                   });
-                  widget.renameTarget(name);
                 });
               },
             ),
@@ -123,12 +120,7 @@ class TargetPageState extends State<TargetPage> {
                       icon: const Icon(Symbols.delete),
                       onPressed: () {
                         setState(() {
-                          widget.e.milestones.remove(m);
-                          if (widget.e.completed >
-                              widget.e.milestones.indexOf(m)) {
-                            widget.e.completed--;
-                          }
-                          updateTarget(widget.e);
+                          widget.removeMilestone(m);
                         });
                       },
                     ),
@@ -145,8 +137,7 @@ class TargetPageState extends State<TargetPage> {
                 onPressed: () {
                   if (widget.e.completed > 0) {
                     setState(() {
-                      widget.e.completed--;
-                      updateTarget(widget.e);
+                      widget.updateMilestone(-1);
                     });
                   }
                 },
@@ -156,8 +147,7 @@ class TargetPageState extends State<TargetPage> {
                 onPressed: () {
                   if (widget.e.completed < widget.e.milestones.length) {
                     setState(() {
-                      widget.e.completed++;
-                      updateTarget(widget.e);
+                      widget.updateMilestone(1);
                     });
                   }
                 },
@@ -174,25 +164,12 @@ class TargetPageState extends State<TargetPage> {
 
           const SizedBox(height: 15),
           Column(children: [
-            // if (widget.e.progress < 1)
-            //   ElevatedButton(
-            //     onPressed: () {
-            //       Navigator.pop(context);
-            //       setState(() {
-            //         widget.updateProgress(0.1);
-            //       });
-            //     },
-            //     child: const Text("Update progress"),
-            //   ),
-
             // delete button
             ElevatedButton(
               onPressed: () {
                 confirmation(context, "delete this target", () {
                   Navigator.pop(context);
-                  setState(() {
-                    widget.removeTarget();
-                  });
+                  widget.removeTarget();
                 });
               },
               child: const Text("Delete target"),
@@ -206,9 +183,17 @@ class TargetPage extends StatefulWidget {
   final Target e;
   final Function() removeTarget;
   final Function(String) renameTarget;
+  final Function(int) updateMilestone;
+  final Function(Milestone) removeMilestone;
+  final Function(Milestone) addMilestone;
 
   const TargetPage(this.e,
-      {required this.removeTarget, required this.renameTarget, super.key});
+      {required this.removeTarget,
+      required this.renameTarget,
+      required this.updateMilestone,
+      required this.removeMilestone,
+      required this.addMilestone,
+      super.key});
 
   @override
   createState() => TargetPageState();

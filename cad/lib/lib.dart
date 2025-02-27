@@ -63,7 +63,7 @@ confirmation(BuildContext context, m, ifConfirm) => showDialog(
       ),
     );
 
-rename(context, thing, onPressed) {
+rename(BuildContext context, String currentName, thing, Function(String) onPressed) {
   var name = "";
 
   showDialog(
@@ -83,6 +83,8 @@ rename(context, thing, onPressed) {
                 labelText:
                     "${thing[0].toUpperCase() + thing.substring(1)} name",
               ),
+              // add text to the description
+              controller: TextEditingController(text: currentName),
               onChanged: (v) {
                 name = v;
               },

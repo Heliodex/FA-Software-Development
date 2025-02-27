@@ -177,11 +177,10 @@ class RecipePageState extends State<RecipePage> {
             IconButton(
               icon: const Icon(Symbols.edit),
               onPressed: () {
-                rename(context, "recipe", (name) {
+                rename(context, widget.e.title,"recipe", (name) {
                   setState(() {
-                    widget.e.title = name;
+                    widget.renameRecipe(name);
                   });
-                  widget.renameRecipe(name);
                 });
               },
             ),

@@ -76,7 +76,7 @@ class NavigationState extends State<Navigation> {
       TextButton(
         onPressed: () {
           Navigator.pop(context);
-          setState(() async {
+          setState(() {
             recipes.add(Recipe(name));
             saveRecipes(recipes);
           });
@@ -108,6 +108,27 @@ class NavigationState extends State<Navigation> {
         renameTarget: (name) {
           setState(() {
             e.title = name;
+            updateTarget(e);
+          });
+        },
+        addMilestone: (Milestone m) {
+          setState(() {
+            e.milestones.add(m);
+            updateTarget(e);
+          });
+        },
+        removeMilestone: (Milestone m) {
+          setState(() {
+            if (e.completed > e.milestones.indexOf(m)) {
+              e.completed--;
+            }
+            e.milestones.remove(m);
+            updateTarget(e);
+          });
+        },
+        updateMilestone: (n) {
+          setState(() {
+            e.completed += n;
             updateTarget(e);
           });
         },
