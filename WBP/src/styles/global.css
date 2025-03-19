@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+* {
+	font-family: sans-serif;
+}
+
+main, nav {
+	padding: 1rem;
+	max-width: 800px;
+	margin: 0 auto;
+}
+
+h1 {
+	@apply text-3xl font-bold;
+}
