@@ -4,16 +4,24 @@ import Base from "./Base.astro"
 ---
 
 <Base>
-	<nav>
-		<ul>
-			<li><a href="/">Home</a></li>
-			<li><a href="/events">Events</a></li>
-			<li><a href="/fundraising">Fundraising</a></li>
-			<li><a href="/history">History</a></li>
-			<li><a href="/affiliations">Affiliations</a></li>
-			<li><a href="/contact">Contact</a></li>
-		</ul>
-	</nav>
+	<header>
+		<h1 class="font-light! pt-4 pb-8 inline-block">
+			Machair Camanachd United &ndash; Shinty Club
+		</h1>
+
+		<nav class="pb-4">
+			<ul
+				class="flex gap-3 text-white *:*:bg-neutral-400 *:*:px-2 *:*:py-1.5 *:*:rounded-lg *:*:hover:bg-neutral-500 *:*:transition-all"
+			>
+				<li><a href="/">Home</a></li>
+				<li><a href="/events">Events</a></li>
+				<li><a href="/fundraising">Fundraising</a></li>
+				<li><a href="/history">History</a></li>
+				<li><a href="/affiliations">Affiliations</a></li>
+				<li><a href="/contact">Contact</a></li>
+			</ul>
+		</nav>
+	</header>
 	<main>
 		<slot />
 	</main>

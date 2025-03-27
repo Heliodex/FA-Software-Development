@@ -4,12 +4,21 @@
 	font-family: sans-serif;
 }
 
-main, nav {
+header,
+main {
 	padding: 1rem;
 	max-width: 800px;
 	margin: 0 auto;
 }
 
 h1 {
-	@apply text-3xl font-bold;
+	@apply text-2xl font-bold;
+}
+h2 {
+	@apply text-xl font-bold;
+}
+
+/* a not child of nav */
+a:not(nav a) {
+	@apply text-blue-500 underline;
 }

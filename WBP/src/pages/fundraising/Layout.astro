@@ -1,0 +1,19 @@
+---
+import MainLayout from "../../layouts/Layout.astro"
+---
+
+<MainLayout>
+	<h1>Donations & Fundraising</h1>
+
+	<nav class="py-4">
+		<ul
+			class="flex gap-3 text-white *:*:px-2 *:*:py-1.5 *:*:rounded-lg *:*:bg-neutral-400 *:*:hover:bg-neutral-500 *:*:transition-all"
+		>
+			<li><a href="/fundraising/advertisements">Advertisements</a></li>
+			<li><a href="/fundraising/sponsorships">Sponsorships</a></li>
+			<li><a href="/fundraising/lotto">Lotto</a></li>
+		</ul>
+	</nav>
+
+	<slot />
+</MainLayout>

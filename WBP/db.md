@@ -34,6 +34,7 @@
 - contact information
 - fundraising
 	- information on how to donate
+	- advertising opportunities
 	- sponsorship opportunities
 	- lotto information
 
@@ -51,3 +52,18 @@
 	- payment information
 - payment status
 
+## More information to ask for
+
+- Pre-existing computer systems or websites
+- Pre-existing club information or documents regarding members
+	- Team members, coaches, captains
+- Funding history, prior events, previous lotto winners
+- Match-day vendor and fee information
+- Any requests for colour scheme, branding, logo
+- Specific technical requirements, hardware or software
+- Information about history of the club
+- Information about the board of directors
+- Club affiliations
+- Information about the gym, social club and pitch
+	- Location, bookable dates, etc
+- Any other specific contact information to link to
