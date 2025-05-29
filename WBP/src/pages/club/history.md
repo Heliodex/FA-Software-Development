@@ -5,7 +5,7 @@ title: Club History
 
 ## Club History
 
-### St Kilda Shinty Club – Guardians of the Western Edge
+### St Kilda Shinty Club &ndash; Guardians of the Western Edge
 
 Founded: **1930**  
 Home Ground: **Village Bay Pitch, Hirta**  
