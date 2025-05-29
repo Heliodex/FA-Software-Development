@@ -1,9 +1,7 @@
 ---
-layout: ../layouts/Layout.astro
+layout: ./Layout.astro
 title: Club Affiliations
 ---
-
-# Club Affiliations
 
 ## Sporting Affiliations
 
@@ -36,7 +34,7 @@ A Gaelic music and cultural organization. The club partners with Ceòlas for her
 
 ### St Kilda Heritage Centre
 
-Collaborative exhibitions and events celebrating the island’s past, including the historical role of shinty in island life.
+Collaborative exhibitions and events celebrating the island's past, including the historical role of shinty in island life.
 </div>
 
 ## Educational Ties

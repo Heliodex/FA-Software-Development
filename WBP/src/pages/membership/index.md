@@ -11,7 +11,7 @@ Fast, fierce, and known for his unstoppable drives from the halfway line, Calum 
 
 ### 2. Ewan Fraser &ndash; Midfield
 
-The tireless engine of the team, Ewan’s stamina is legendary. When he's not stealing possession, he's assisting goals and barking orders. A true midfield general.
+The tireless engine of the team, Ewan's stamina is legendary. When he's not stealing possession, he's assisting goals and barking orders. A true midfield general.
 
 ### 3. Ruaridh Grant &ndash; Defender
 
@@ -19,15 +19,15 @@ Built like a stone wall with the calm of a loch at dawn. Ruaridh rarely speaks, 
 
 ### 4. Jamie-Anne MacKay &ndash; Wing Forward
 
-Lightning on two feet and fearless in the face of any challenge, Jamie-Anne weaves through defenses like they’re standing still. Don’t let the smile fool you—she’s ruthless in the D.
+Lightning on two feet and fearless in the face of any challenge, Jamie-Anne weaves through defenses like they're standing still. Don't let the smile fool you—she's ruthless in the D.
 
 ### 5. Isla Cameron &ndash; Keeper
 
-The last line of defense and the first to roar a victory chant. With cat-like reflexes and nerves of steel, Isla’s saves have kept more than a few clean sheets.
+The last line of defense and the first to roar a victory chant. With cat-like reflexes and nerves of steel, Isla's saves have kept more than a few clean sheets.
 
 ### 6. Finlay "Sticks" Morrison &ndash; Utility Player
 
-He’s played every position and excelled in them all. Finlay’s versatility makes him invaluable. Known for his wild hair, wild plays, and even wilder celebrations.
+He's played every position and excelled in them all. Finlay's versatility makes him invaluable. Known for his wild hair, wild plays, and even wilder celebrations.
 
 ### 7. Morven Douglas &ndash; Defender
 

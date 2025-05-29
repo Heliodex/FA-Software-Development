@@ -2,7 +2,7 @@
 
 ## Summary
 
-> The club is a Local shinty club competing in both national and local competition, the club has it’s own pitch, clubhouse and related facilities.
+> The club is a Local shinty club competing in both national and local competition, the club has it's own pitch, clubhouse and related facilities.
 > 
 > We are looking for a website that has
 > 
