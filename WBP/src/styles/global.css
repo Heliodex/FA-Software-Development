@@ -4,21 +4,48 @@
 	font-family: sans-serif;
 }
 
+:root {
+	padding: 4rem 1rem;
+}
+
 header,
 main {
-	padding: 1rem;
 	max-width: 800px;
 	margin: 0 auto;
 }
 
+header {
+	padding: 1rem 0;
+}
+
+main {
+	padding-bottom: 4rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	@apply font-bold m-0;
+}
+
 h1 {
-	@apply text-2xl font-bold;
+	@apply text-2xl;
 }
 h2 {
-	@apply text-xl font-bold;
+	@apply text-xl pt-6 pb-2;
+}
+h3 {
+	@apply text-lg pt-6 pb-2;
 }
 
 /* a not child of nav */
 a:not(nav a) {
 	@apply text-blue-500 underline;
+}
+
+blockquote {
+	@apply border-l-4 pl-4 py-1 italic text-gray-700;
 }
