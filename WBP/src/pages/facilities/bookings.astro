@@ -1,5 +1,71 @@
 ---
+import { db } from "astro:db"
+import { bookings } from "astro:db"
 import Layout from "./Layout.astro"
+
+const errors: {
+	facility?: string
+	startDate?: string
+	endDate?: string
+
+	name?: string
+	email?: string
+	phone?: string
+	paymentInfo?: string
+
+	generic?: string
+} = {}
+
+let success = ""
+
+async function handleForm() {
+	const data = await Astro.request.formData()
+
+	const facility = data.get("facility")
+	if (!facility) errors.facility = "Facility is required"
+	const startDate = data.get("startDate")
+	if (!startDate) errors.startDate = "Start date is required"
+	const endDate = data.get("endDate")
+	if (!endDate) errors.endDate = "End date is required"
+
+	const bookerName = data.get("name")
+	if (!bookerName) errors.name = "Name is required"
+	const bookerEmail = data.get("email")
+	if (!bookerEmail) errors.email = "Email is required"
+	const bookerPhone = data.get("phone")
+	if (!bookerPhone) errors.phone = "Phone number is required"
+	const bookerPaymentInfo = data.get("paymentInfo")
+	// paymentInfo is optional
+
+	if (Object.values(errors).filter(v => v).length !== 0) return
+	if (
+		typeof facility !== "string" ||
+		typeof startDate !== "string" ||
+		typeof endDate !== "string" ||
+		typeof bookerName !== "string" ||
+		typeof bookerEmail !== "string" ||
+		typeof bookerPhone !== "string" ||
+		typeof bookerPaymentInfo !== "string"
+	) {
+		errors.generic = "Incorrect data type"
+		return
+	}
+
+	db.insert(bookings).values({
+		facility,
+		date: new Date(),
+		startDate: new Date(startDate),
+		endDate: new Date(endDate),
+		bookerName,
+		bookerEmail,
+		bookerPhone,
+		bookerPaymentInfo
+	})
+
+	success = "Form submitted successfully. Thank you for your booking!"
+}
+
+if (Astro.request.method === "POST") await handleForm()
 ---
 
 <Layout>
@@ -13,46 +79,47 @@ import Layout from "./Layout.astro"
 				<option value="social-club">Social Club</option>
 			</select>
 		</div>
+		{errors.facility && <p class="text-red-500">{errors.facility}</p>}
 
 		<div>
-			<label for="date">Start date</label>
-			<input type="date" name="startDate" required />
+			<label for="startDate">Start date</label>
+			<input type="datetime-local" name="startDate" required />
 		</div>
-		<div>
-			<label for="time">Start time</label>
-			<input type="time" name="startTime" required />
-		</div>
+		{errors.startDate && <p class="text-red-500">{errors.startDate}</p>}
 
 		<div>
-			<label for="date">End date</label>
-			<input type="date" name="endDate" required />
+			<label for="endDate">End date</label>
+			<input type="datetime-local" name="endDate" required />
 		</div>
-		<div>
-			<label for="time">End time</label>
-			<input type="time" name="endTime" required />
-		</div>
+		{errors.endDate && <p class="text-red-500">{errors.endDate}</p>}
 
 		<div>
 			<label for="name">Name</label>
 			<input type="text" name="name" required />
 		</div>
+		{errors.name && <p class="text-red-500">{errors.name}</p>}
 
 		<div>
 			<label for="email">Email</label>
 			<input type="email" name="email" required />
 		</div>
+		{errors.email && <p class="text-red-500">{errors.email}</p>}
 
 		<div>
 			<label for="phone">Phone</label>
 			<input type="tel" name="phone" required />
 		</div>
+		{errors.phone && <p class="text-red-500">{errors.phone}</p>}
 
 		<div>
 			<label for="paymentInfo">Payment information</label>
 			<textarea name="paymentInfo" rows="4"></textarea>
 		</div>
+		{errors.paymentInfo && <p class="text-red-500">{errors.paymentInfo}</p>}
 
 		<button type="submit" class="w-min">Book</button>
+		{errors.generic && <p class="text-red-500">{errors.generic}</p>}
+		{success && <p class="text-green-500">{success}</p>}
 	</form>
 </Layout>
 
