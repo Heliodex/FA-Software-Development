@@ -50,5 +50,20 @@ a:not(nav a) {
 }
 
 blockquote {
-	@apply border-l-4 pl-4 py-1 italic text-gray-700;
+	@apply border-l-4 pl-4 py-1 italic text-neutral-700;
+}
+
+select,
+button {
+	cursor: pointer;
+}
+
+input,
+select,
+textarea {
+	@apply border border-neutral-400 rounded-lg px-2 py-1;
+}
+
+button {
+	@apply bg-neutral-500 text-white rounded-lg px-4 py-2 hover:bg-neutral-600 transition-colors;
 }

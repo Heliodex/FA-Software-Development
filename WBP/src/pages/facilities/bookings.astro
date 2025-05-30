@@ -1,0 +1,75 @@
+---
+import Layout from "./Layout.astro"
+---
+
+<Layout>
+	<h2>Bookings</h2>
+
+	<form method="POST" class="flex flex-col gap-4">
+		<div>
+			<label for="facility">Facility</label>
+			<select name="facility" required>
+				<option value="gym">Gym</option>
+				<option value="social-club">Social Club</option>
+			</select>
+		</div>
+
+		<div>
+			<label for="date">Start date</label>
+			<input type="date" name="startDate" required />
+		</div>
+		<div>
+			<label for="time">Start time</label>
+			<input type="time" name="startTime" required />
+		</div>
+
+		<div>
+			<label for="date">End date</label>
+			<input type="date" name="endDate" required />
+		</div>
+		<div>
+			<label for="time">End time</label>
+			<input type="time" name="endTime" required />
+		</div>
+
+		<div>
+			<label for="name">Name</label>
+			<input type="text" name="name" required />
+		</div>
+
+		<div>
+			<label for="email">Email</label>
+			<input type="email" name="email" required />
+		</div>
+
+		<div>
+			<label for="phone">Phone</label>
+			<input type="tel" name="phone" required />
+		</div>
+
+		<div>
+			<label for="paymentInfo">Payment information</label>
+			<textarea name="paymentInfo" rows="4"></textarea>
+		</div>
+
+		<button type="submit" class="w-min">Book</button>
+	</form>
+</Layout>
+
+<style>
+	form div {
+		display: flex;
+		flex-direction: row;
+	}
+
+	label {
+		width: 33.3333%;
+	}
+
+	input[type="text"],
+	input[type="email"],
+	input[type="tel"],
+	textarea {
+		width: 66.6666%;
+	}
+</style>

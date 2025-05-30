@@ -2,7 +2,7 @@ import { column, defineDb, defineTable } from "astro:db"
 
 const bookings = defineTable({
 	columns: {
-		area: column.text(),
+		facility: column.text(),
 		date: column.date(),
 		startDate: column.date(),
 		endDate: column.date(),
