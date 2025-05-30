@@ -4,7 +4,7 @@ import Base from "./Base.astro"
 ---
 
 <Base>
-	<header>
+	<header class="pt-4">
 		<img
 			src="/logo.png"
 			alt="Machair Camanachd United logo"
@@ -23,13 +23,16 @@ import Base from "./Base.astro"
 				<li><a href="/events">Events</a></li>
 				<li><a href="/facilities">Facilities</a></li>
 				<li><a href="/membership">Membership</a></li>
-				<li><a href="/fundraising">Fundraising</a></li>
+				<!-- <li><a href="/fundraising">Fundraising</a></li> -->
 				<li><a href="/club">Club</a></li>
 				<li><a href="/contact">Contact</a></li>
 			</ul>
 		</nav>
 	</header>
-	<main>
+	<main class="pt-4">
 		<slot />
 	</main>
+	<footer class="pt-4">
+		<a href="/privacy">Privacy Policy</a>
+	</footer>
 </Base>

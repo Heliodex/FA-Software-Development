@@ -9,16 +9,13 @@
 }
 
 header,
-main {
+main,
+footer {
 	max-width: 800px;
 	margin: 0 auto;
 }
 
-header {
-	padding: 1rem 0;
-}
-
-main {
+footer {
 	padding-bottom: 4rem;
 }
 
@@ -64,6 +61,11 @@ textarea {
 	@apply border border-neutral-400 rounded-lg px-2 py-1;
 }
 
-button {
+form button {
 	@apply bg-neutral-500 text-white rounded-lg px-4 py-2 hover:bg-neutral-600 transition-colors;
+}
+
+td,
+th {
+	@apply border-solid border-1 border-black px-4 py-2;
 }

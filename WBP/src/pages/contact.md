@@ -1,9 +1,9 @@
 ---
 layout: ../layouts/Layout.astro
-title: Contact Us
+title: Contact us
 ---
 
-# Contact Us
+# Contact us
 
 ## Club location
 
