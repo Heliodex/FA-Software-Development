@@ -37,6 +37,9 @@ async function handleForm() {
 	const bookerPaymentInfo = data.get("paymentInfo")
 	// paymentInfo is optional
 
+	if (facility.toString().length > 20) errors.facility = "Facility too long"
+	if (bookerPhone.toString().length > 20) errors.phone = "Phone number too long"
+
 	if (Object.values(errors).filter(v => v).length !== 0) return
 	if (
 		typeof facility !== "string" ||

@@ -54,14 +54,14 @@
 ```mermaid
 erDiagram
 BOOKINGS {
-	string facility
+	string(20) facility
 	date date
 	date startDate
 	date endDate
 
 	string bookerName
 	string bookerEmail
-	string bookerPhone
+	string(20) bookerPhone
 	string bookerPaymentInfo
 	date paidDate
 }
