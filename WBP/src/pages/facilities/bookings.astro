@@ -51,16 +51,21 @@ async function handleForm() {
 		return
 	}
 
-	db.insert(bookings).values({
-		facility,
-		date: new Date(),
-		startDate: new Date(startDate),
-		endDate: new Date(endDate),
-		bookerName,
-		bookerEmail,
-		bookerPhone,
-		bookerPaymentInfo
-	})
+	try {
+		await db.insert(bookings).values({
+			facility,
+			date: new Date(),
+			startDate: new Date(startDate),
+			endDate: new Date(endDate),
+			bookerName,
+			bookerEmail,
+			bookerPhone,
+			bookerPaymentInfo
+		})
+	} catch {
+		errors.generic = "An error occured while saving your response"
+		return
+	}
 
 	success = "Form submitted successfully. Thank you for your booking!"
 }
