@@ -41,7 +41,6 @@
 ## Flat file
 
 **bookings** table
-- id
 - area to be booked (gym, pitch, social club)
 - date & time
 - duration (or start & end time)
@@ -51,6 +50,22 @@
 	- phone number
 	- payment information
 - payment status
+
+```mermaid
+erDiagram
+BOOKINGS {
+	string facility
+	date date
+	date startDate
+	date endDate
+
+	string bookerName
+	string bookerEmail
+	string bookerPhone
+	string bookerPaymentInfo
+	date paidDate
+}
+```
 
 ## More information to ask for
 
