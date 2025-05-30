@@ -1,0 +1,35 @@
+<button
+	id="help"
+	class="fixed bottom-8 right-8 rounded-full size-12 bg-blue-500 hover:bg-blue-600 text-white text-2xl shadow-black/50 shadow-lg hover:shadow-xl transition-all"
+>
+	?
+</button>
+
+<script>
+	const helpText = `If you need further assistance, please contact us using the links on our contact page.`
+
+	// Use a function that can be called on initial load and during astro:page-load event
+	function setupHelpButtons() {
+		const button = document.getElementById("help")
+		if (!button) return
+
+		button.addEventListener("click", () => {
+			const helpMenu = document.getElementById("help-menu")
+			if (helpMenu) {
+				helpMenu.remove()
+				return
+			}
+
+			const menu = document.createElement("div")
+			menu.id = "help-menu"
+
+			const p = document.createElement("p")
+			p.textContent = helpText
+
+			menu.appendChild(p)
+			document.body.appendChild(menu)
+		})
+	}
+
+	document.addEventListener("astro:page-load", setupHelpButtons)
+</script>
